@@ -436,7 +436,7 @@
                     case 'outro':
                         html = `<div class="flex flex-col items-center w-full max-h-full min-h-0"><div class="text-5xl shrink-0 text-indigo-500 mb-4"><i class="ph ph-sparkle"></i></div><p class="desc-text font-medium text-center">${page.text}</p></div>`;
                         completionSound.triggerAttackRelease(["E5", "G5", "C6", "E6"], "2n");
-                        window.parent.postMessage('lesson_complete', '*');
+                        window.parent.postMessage({ type: 'lesson_complete' }, '*');
                         break;
                 }
 
