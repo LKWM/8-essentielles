@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8 phrases essentielles - L’introduction</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&family=Poppins:wght@400;600&display=swap');
+
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #3730A3;
+            --bg-color: #F8FAFC;
+            --nav-height: 70px;
+        }
+
+        body {
+            font-family: 'Poppins', 'Noto Sans KR', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            overflow: hidden; 
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            color: #1E293B;
+        }
+
+        .app-container {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2vh 4vw;
+            box-sizing: border-box;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .content-box {
+            width: 100%;
+            max-width: 1200px;
+            max-height: 100%;
+            min-height: 0;
+            margin: auto;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s ease-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .content-box.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .title-main {
+            font-size: clamp(1.5rem, 5vh, 3.5rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5vh;
+            flex-shrink: 0;
+        }
+
+        .subtitle-main {
+            font-size: clamp(1rem, 2.5vh, 1.5rem);
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 1vh;
+            flex-shrink: 0;
+        }
+
+        .desc-text {
+            font-size: clamp(1rem, 2.5vh, 1.7rem);
+            line-height: 1.5;
+            max-width: 800px;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            flex-shrink: 1;
+            min-height: 0; 
+            overflow-y: auto;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+
+        .desc-text::-webkit-scrollbar { width: 6px; }
+        .desc-text::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
+
+        .char-card {
+            background: white;
+            border-radius: clamp(1rem, 3vh, 2rem);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            padding: clamp(1rem, 4vh, 3rem);
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: clamp(120px, 20vw, 320px);
+            max-height: 55vh;
+            border: 2px solid #F1F5F9;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            flex-shrink: 0;
+        }
+
+        .nav-bar {
+            width: 100%;
+            height: var(--nav-height);
+            flex-shrink: 0;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid #E2E8F0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            z-index: 100;
+            box-sizing: border-box;
+        }
+
+        .btn-nav {
+            padding: 0.6rem clamp(1rem, 2vw, 1.5rem);
+            border-radius: 9999px;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: clamp(0.875rem, 2vh, 1rem);
+        }
+
+        .btn-nav:disabled { opacity: 0.2; cursor: not-allowed; }
+        .btn-primary { background-color: var(--primary); color: white; }
+        .btn-secondary { color: #64748B; border: 1px solid #CBD5E1; }
+
+        /* Quiz Multi-Select Styles */
+        .quiz-option { cursor: pointer; user-select: none; }
+        .quiz-option.selected { border-color: var(--primary); background: #EEF2FF; color: var(--primary-dark); transform: scale(1.02); }
+        .quiz-option.correct { border-color: #10B981 !important; background: #ECFDF5 !important; color: #059669 !important; }
+        .quiz-option.wrong { border-color: #EF4444 !important; background: #FEF2F2 !important; color: #DC2626 !important; }
+
+        /* Quiz Matching Styles */
+        .droppable-area {
+            border: 2px dashed #CBD5E1;
+            border-radius: 0.75rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+            transition: all 0.2s;
+            align-content: flex-start;
+            justify-content: center;
+            position: relative;
+        }
+        .droppable-area:hover { border-color: #94A3B8; background: #F8FAFC; }
+        
+        .draggable-item {
+            background: white;
+            border: 2px solid #E2E8F0;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            color: #334155;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: grab;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            touch-action: none; /* Crucial for instant mobile touch tracking */
+            z-index: 10;
+        }
+        .draggable-item:active { cursor: grabbing; }
+        .draggable-item:hover { transform: translateY(-2px); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .draggable-item.correct { background: #ECFDF5; border-color: #10B981; color: #059669; cursor: default; pointer-events: none; transform: none; box-shadow: none;}
+        .draggable-item.reveal { background: #FFF7ED; border-color: #F97316; color: #C2410C; cursor: default; pointer-events: none; transform: none; box-shadow: none;}
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        .animate-shake { animation: shake 0.4s; }
+
+        @media (max-width: 640px) {
+            .nav-bar { padding: 0 1rem; }
+            .btn-nav span { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="app-container">
+        <div id="lesson-content" class="content-box"></div>
+    </main>
+
+    <nav class="nav-bar">
+        <button id="prev-btn" class="btn-nav btn-secondary" onclick="movePage(-1)">
+            <i class="ph ph-caret-left"></i> <span>Précédent</span>
+        </button>
+        <div id="progress" class="text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-widest text-center"></div>
+        <button id="next-btn" class="btn-nav btn-primary" onclick="movePage(1)">
+            <span>Suivant</span> <i class="ph ph-caret-right"></i>
+        </button>
+    </nav>
+
+    <script>
+        const pages = [
+            { type: 'cover', subtitle: '8 phrases essentielles', title: 'L’introduction', btnText: 'Commencer', isCompleted: true },
+            { type: 'text', text: "Bonjour à tous ! Bienvenue dans le programme « 8 phrases essentielles ». Ce programme est un simple échauffement pour ceux qui ont terminé le cours « Apprendre le 한글 » avant de passer à l'étape suivante.", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1774953704/1-1_gxzveq.wav', isCompleted: true },
+            { type: 'text', text: "Dans ce programme, nous allons apprendre huit phrases simples que vous pourrez utiliser en coréen dans des situations pour se saluer, remercier, s'excuser, et dire au revoir.", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1774953703/1-2_is3rxz.mp3', isCompleted: true },
+            { type: 'text', text: "Ce programme n'aborde pas la grammaire en détail, mais il y a une règle importante que vous devez absolument connaître. Il s'agit de la structure de la phrase en coréen.", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1774953703/1-3_bhrgve.mp3', isCompleted: true },
+            { type: 'info-card', cardText: 'S(sujet)-O(objet)-V(verbe) <span class="text-indigo-300">/</span> P(Prédicat)', text: "En grammaire, on appelle souvent le coréen « une langue SOV ». Cela signifie qu'une phrase commence par le sujet et se termine par le verbe.<br><br>Mais en coréen, on utilise plus souvent le terme « prédicat » au lieu de verbe, car les prédicats incluent les verbes et les adjectifs.", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1774953810/1-4_p2l6wp.wav', isCompleted: true },
+            { type: 'multi-select-quiz', question: "Choisissez toutes les classes grammaticales qui peuvent être placées à la fin d'une phrase en coréen.", options: ['Nom', 'Adjectif', 'Verbe', 'Pronom', 'Adverbe', 'Préposition', 'Particule'], answers: ['Adjectif', 'Verbe'], tries: 0, isCompleted: false },
+            { type: 'info-card', cardText: 'Registres de langue : <br><span class="text-indigo-400 font-medium mt-2 block" style="font-size: 0.7em">Formel / Poli / Informel</span>', text: "Le prédicat qui se trouve à la fin de la phrase, c'est-à-dire le verbe ou l'adjectif, se conjugue sous différentes formes selon les niveaux de politesse. La grammaire divise ces niveaux en six, mais les locuteurs coréens modernes en utilisent principalement trois.", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1774953812/1-5_wuutre.wav', isCompleted: true },
+            { type: 'multi-cards-audio', cards: [{text: 'Terminaison formelle : <br><span class="text-2xl md:text-4xl mt-2 md:mt-4 block font-bold">-다.</span>', audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1774953702/%E1%84%83%E1%85%A1_ty0deq.mp3'}, {text: 'Terminaison formelle : <br><span class="text-2xl md:text-4xl mt-2 md:mt-4 block font-bold">-까?</span>', audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1774953703/%E1%84%81%E1%85%A1_s2fd6e.mp3'}], text: "« La phrase formelle » s'utilise principalement pour s'adresser à un supérieur, faire une présentation devant un public non spécifique ou lors d'occasions officielles. Elle se caractérise par une terminaison en « 다 » pour les phrases déclaratives et en « 까 » pour les phrases interrogatives.", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1774953704/1-6_xngsot.mp3', isCompleted: true },
+            { type: 'multi-select-quiz', question: "Choisissez toutes les terminaisons appropriées pour la phrase formelle.", options: ['까', '요', '다', '해', '야'], answers: ['까', '다'], tries: 0, isCompleted: false },
+            { type: 'info-card', cardText: 'Terminaison polie : <br><span class="text-[clamp(4rem,10vh,6rem)] mt-2 block leading-none">-요.</span>', cardAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1774953703/%E1%84%8B%E1%85%AD_ifaavw.mp3', text: "« La phrase polie » est généralement le registre le plus utilisé ; elle peut s'employer aussi bien avec des proches qu'avec des personnes que l'on connaît peu. Elle se termine toujours par « 요 », qu'il s'agisse d'une phrase déclarative ou interrogative.", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1774953703/1-7_g5s5a6.mp3', isCompleted: true },
+            { type: 'info-card', cardText: 'Terminaison informelle : <br><span class="text-[clamp(4rem,10vh,6rem)] mt-2 block leading-none">∅</span>', text: "« La phrase informelle » s'utilise avec des personnes très proches, beaucoup plus jeunes ou des enfants. Il suffit de retirer la terminaison « 요 » de la phrase polie, sans ajouter d'autre terminaison spécifique.", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1774953811/1-8_cid0sw.wav', isCompleted: true },
+            { type: 'matching-quiz', question: "Choisissez la terminaison correspondant à chaque registre de langue.", categories: ['Le registre formel', 'Le registre poli', 'Le registre informel'], options: ['시', '∅', '까', '요', '다', '해', '자'], answers: {'Le registre formel': ['까', '다'], 'Le registre poli': ['요'], 'Le registre informel': ['∅']}, tries: 0, isCompleted: false },
+            { type: 'outro', text: "Bon travail ! Passez à la leçon 2 et apprenez à saluer en coréen.", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1774953708/1-9_gwodps.wav', isCompleted: true }
+        ];
+
+        let currentPage = 0;
+        let currentAudio = null;
+        let interactionAudio = null;
+        let backgroundAudioTimeout = null;
+        let transitionSynth, correctSound, completionSound, wrongSound;
+
+        // Custom touch drag state
+        let draggingItem = null;
+        let ghostEl = null;
+
+        window.onload = () => {
+            Tone.Destination.volume.value = -8;
+            transitionSynth = new Tone.Synth().toDestination();
+            correctSound = new Tone.PolySynth().toDestination();
+            wrongSound = new Tone.PolySynth().toDestination();
+            completionSound = new Tone.PolySynth().toDestination();
+            renderPage();
+            window.addEventListener('blur', stopAllAudio);
+            window.addEventListener('resize', adjustTextFit);
+        };
+
+        function stopAllAudio() {
+            if (backgroundAudioTimeout) {
+                clearTimeout(backgroundAudioTimeout);
+                backgroundAudioTimeout = null;
+            }
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+                currentAudio = null;
+            }
+            if (interactionAudio) {
+                interactionAudio.pause();
+                interactionAudio.currentTime = 0;
+                interactionAudio = null;
+            }
+        }
+
+        function playBackgroundAudio(url, delay = 0) {
+            if (backgroundAudioTimeout) clearTimeout(backgroundAudioTimeout);
+            if (!url) return; 
+            backgroundAudioTimeout = setTimeout(() => {
+                if (currentAudio) {
+                    currentAudio.pause();
+                    currentAudio.currentTime = 0;
+                    currentAudio = null;
+                }
+                currentAudio = new Audio(url);
+                currentAudio.play().catch(e => {});
+            }, delay);
+        }
+
+        function playInteractionAudio(url) {
+            if (!url) return; 
+            if (backgroundAudioTimeout) {
+                clearTimeout(backgroundAudioTimeout);
+                backgroundAudioTimeout = null;
+            }
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+                currentAudio = null;
+            }
+            if (interactionAudio) {
+                interactionAudio.pause();
+                interactionAudio.currentTime = 0;
+            }
+            interactionAudio = new Audio(url);
+            interactionAudio.play().catch(e => {});
+        }
+
+        function movePage(step) {
+            const nextIdx = currentPage + step;
+            if (nextIdx >= 0 && nextIdx < pages.length) {
+                stopAllAudio();
+                transitionSynth.triggerAttackRelease("C4", "8n");
+                currentPage = nextIdx;
+                renderPage();
+            }
+        }
+
+        function renderPage() {
+            const page = pages[currentPage];
+            const container = document.getElementById('lesson-content');
+            const nextBtn = document.getElementById('next-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const progress = document.getElementById('progress');
+
+            progress.innerText = `Page ${currentPage + 1} / ${pages.length}`;
+            container.classList.remove('active');
+            
+            setTimeout(() => {
+                container.innerHTML = '';
+                let html = '';
+
+                nextBtn.disabled = (currentPage === pages.length - 1) || !page.isCompleted;
+                prevBtn.disabled = (currentPage === 0 || currentPage === pages.length - 1);
+
+                switch (page.type) {
+                    case 'cover':
+                        html = `<div class="flex flex-col items-center w-full max-h-full min-h-0"><h2 class="subtitle-main">${page.subtitle}</h2><h1 class="title-main">${page.title}</h1><button onclick="movePage(1)" class="mt-4 px-10 py-3 bg-indigo-600 text-white rounded-full text-lg font-bold hover:bg-indigo-700 transition-all shadow-lg shrink-0">${page.btnText}</button></div>`;
+                        nextBtn.style.display = 'none'; prevBtn.style.display = 'none'; break;
+
+                    case 'text':
+                        html = `<div class="flex flex-col items-center w-full max-h-full min-h-0"><p class="desc-text font-medium mt-6">${page.text}</p></div>`;
+                        nextBtn.style.display = 'flex'; prevBtn.style.display = 'flex'; break;
+
+                    case 'info-card':
+                        html = `
+                            <div class="flex flex-col items-center w-full max-h-full min-h-0">
+                                <div class="char-card mb-6 px-6 sm:px-12 shrink-0 ${page.cardAudio ? 'cursor-pointer hover:scale-105' : 'cursor-default'}" ${page.cardAudio ? `onclick="playInteractionAudio('${page.cardAudio}')"` : ''}>
+                                    <div class="font-bold text-indigo-700 tracking-tight text-center leading-tight" style="font-size: clamp(1.2rem, 3.5vh, 2.5rem);">${page.cardText}</div>
+                                    ${page.cardAudio ? `<div class="mt-4 text-indigo-300 text-center"><i class="ph ph-speaker-high text-3xl"></i></div>` : ''}
+                                </div>
+                                <p class="desc-text mt-2">${page.text}</p>
+                            </div>
+                        `;
+                        nextBtn.style.display = 'flex'; prevBtn.style.display = 'flex'; break;
+
+                    case 'multi-cards-audio':
+                        // Flex-row forced unconditionally to keep them side by side even on mobile
+                        html = `
+                            <div class="flex flex-col items-center w-full max-h-full min-h-0">
+                                <div class="flex flex-row gap-2 sm:gap-4 mb-4 sm:mb-8 shrink-0 w-full max-w-4xl justify-center px-0 sm:px-2">
+                                    ${page.cards.map(c => `
+                                        <div class="char-card !min-w-0 flex-1 cursor-pointer px-2 py-4 sm:px-6 sm:py-6 hover:scale-105 hover:border-indigo-200 transition-all border-2 border-slate-100 shadow-sm" onclick="playInteractionAudio('${c.audio}')">
+                                            <div class="text-indigo-700 text-center flex-1 flex flex-col items-center justify-center w-full leading-snug" style="font-size: clamp(0.9rem, 3vw, 1.5rem);">${c.text}</div>
+                                            <div class="mt-2 sm:mt-6 text-indigo-300 text-center shrink-0"><i class="ph ph-speaker-high text-xl sm:text-3xl"></i></div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                                <p class="desc-text mt-2">${page.text}</p>
+                            </div>
+                        `;
+                        nextBtn.style.display = 'flex'; prevBtn.style.display = 'flex'; break;
+
+                    case 'multi-select-quiz':
+                        html = `
+                            <div class="flex flex-col items-center w-full max-h-full min-h-0 justify-center flex-1">
+                                <h2 class="subtitle-main text-slate-900 mb-6 text-center px-4 max-w-2xl">${page.question}</h2>
+                                <div class="flex flex-wrap justify-center gap-2 sm:gap-3 w-full max-w-3xl mb-6 shrink-0 px-2">
+                                    ${page.options.map(opt => `
+                                        <button class="quiz-option px-4 py-2 sm:px-6 sm:py-3 text-base sm:text-xl font-bold rounded-xl border-2 border-slate-200 bg-white hover:border-indigo-300 transition-all ${page.isCompleted && page.answers.includes(opt) ? 'correct' : ''}" onclick="toggleMultiOption(this)">${opt}</button>
+                                    `).join('')}
+                                </div>
+                                <div class="h-14 mt-2 flex items-center justify-center shrink-0 w-full relative">
+                                    <button id="multi-valider-btn" onclick="validateMultiQuiz()" class="btn-primary flex rounded-full px-8 py-2 sm:px-10 sm:py-3 font-bold text-sm sm:text-lg shadow-md hover:scale-105 transition-transform absolute" ${page.isCompleted ? 'style="display:none;"' : ''}>Valider</button>
+                                    <p id="quiz-feedback" class="text-base sm:text-lg font-bold m-0 text-center w-full absolute" ${!page.isCompleted ? 'style="display:none;"' : ''}>${page.isCompleted ? '<span class="text-green-500">Excellent !</span>' : ''}</p>
+                                </div>
+                            </div>
+                        `;
+                        nextBtn.style.display = 'flex'; prevBtn.style.display = 'flex'; break;
+
+                    case 'matching-quiz':
+                        // Adaptive layout: stack vertically on mobile (flex-col), side-by-side categories on desktop
+                        html = `
+                            <div class="flex flex-col items-center w-full h-full min-h-0 justify-center flex-1">
+                                <h2 class="subtitle-main text-slate-900 mb-2 sm:mb-4 text-center px-2 max-w-2xl shrink-0" style="font-size: clamp(0.95rem, 2.5vh, 1.3rem);">${page.question}</h2>
+                                
+                                <div class="w-full max-w-4xl shrink-1 min-h-0 flex flex-col gap-2 sm:gap-4 px-2 flex-1 justify-center">
+                                    
+                                    <!-- Pool Area -->
+                                    <div class="bg-white p-2 sm:p-3 rounded-xl shadow-sm border border-slate-200 shrink-0">
+                                        <div class="droppable-area w-full bg-slate-50 gap-1 sm:gap-2 p-2 h-[140px] sm:h-[80px]" data-zone="pool" ondragover="allowDrop(event)" ondrop="drop(event)">
+                                            ${!page.isCompleted ? page.options.map((o, i) => `
+                                                <div class="draggable-item text-base sm:text-xl px-3 py-1 sm:px-4 sm:py-2" id="drag-item-${i}" 
+                                                    draggable="true" 
+                                                    ondragstart="drag(event)" 
+                                                    ontouchstart="touchStart(event)" 
+                                                    ontouchmove="touchMove(event)" 
+                                                    ontouchend="touchEnd(event)">${o}</div>
+                                            `).join('') : ''}
+                                        </div>
+                                    </div>
+
+                                    <!-- Categories Area (Adaptive flex) -->
+                                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 flex-1 min-h-0">
+                                        ${page.categories.map((c) => `
+                                            <div class="bg-indigo-50/50 p-2 sm:p-3 rounded-xl border border-indigo-100 flex flex-col flex-1 min-h-0">
+                                                <h3 class="font-bold text-indigo-800 text-xs sm:text-[0.95rem] mb-1 sm:mb-2 text-center shrink-0 flex items-center justify-center">${c}</h3>
+                                                <div class="droppable-area flex-1 w-full bg-white shadow-inner gap-1 sm:gap-2 p-2 min-h-[50px] sm:min-h-[70px]" data-zone="${c}" ondragover="allowDrop(event)" ondrop="drop(event)">
+                                                    ${page.isCompleted ? page.answers[c].map(ans => `<div class="draggable-item correct text-base sm:text-xl px-3 py-1 sm:px-4 sm:py-2">${ans}</div>`).join('') : ''}
+                                                </div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+
+                                </div>
+
+                                <div class="h-10 sm:h-14 mt-2 sm:mt-4 flex items-center justify-center shrink-0 w-full relative">
+                                    <button id="match-valider-btn" onclick="validateMatchingQuiz()" class="btn-primary flex rounded-full px-6 py-2 sm:px-10 sm:py-3 font-bold text-sm sm:text-lg shadow-md hover:scale-105 transition-transform absolute" ${page.isCompleted ? 'style="display:none;"' : ''}>Valider</button>
+                                    <p id="quiz-feedback" class="text-sm sm:text-lg font-bold m-0 text-center w-full absolute" ${!page.isCompleted ? 'style="display:none;"' : ''}>${page.isCompleted ? '<span class="text-green-500">Excellent !</span>' : ''}</p>
+                                </div>
+                            </div>
+                        `;
+                        nextBtn.style.display = 'flex'; prevBtn.style.display = 'flex'; break;
+
+                    case 'outro':
+                        html = `<div class="flex flex-col items-center w-full max-h-full min-h-0"><div class="text-5xl shrink-0 text-indigo-500 mb-4"><i class="ph ph-sparkle"></i></div><p class="desc-text font-medium text-center">${page.text}</p></div>`;
+                        nextBtn.style.display = 'none'; prevBtn.style.display = 'flex'; 
+                        completionSound.triggerAttackRelease(["E5", "G5", "C6", "E6"], "2n");
+                        break;
+                }
+
+                container.innerHTML = html;
+                requestAnimationFrame(() => adjustTextFit());
+                container.classList.add('active');
+
+                if (page.audio) {
+                    playBackgroundAudio(page.audio, 500);
+                }
+            }, 50);
+        }
+
+        function adjustTextFit() {
+            const descTexts = document.querySelectorAll('.desc-text');
+            descTexts.forEach(descText => {
+                descText.style.fontSize = '';
+                descText.style.lineHeight = '';
+                
+                let size = parseFloat(window.getComputedStyle(descText).fontSize);
+                let attempts = 40; 
+                const minSize = 13; 
+                
+                while (descText.scrollHeight > descText.clientHeight + 2 && size > minSize && attempts > 0) {
+                    size -= 0.5;
+                    descText.style.fontSize = size + 'px';
+                    descText.style.lineHeight = '1.35';
+                    attempts--;
+                }
+            });
+        }
+
+        /* --- Logic for Multi-Select Quiz --- */
+        window.toggleMultiOption = function(btn) {
+            const page = pages[currentPage];
+            if (page.isCompleted) return;
+            btn.classList.toggle('selected');
+        };
+
+        window.validateMultiQuiz = function() {
+            const page = pages[currentPage];
+            if (page.isCompleted) return;
+            
+            const selectedBtns = document.querySelectorAll('.quiz-option.selected');
+            const selectedVals = Array.from(selectedBtns).map(b => b.innerText.trim());
+            const isCorrect = selectedVals.length === page.answers.length && page.answers.every(a => selectedVals.includes(a));
+
+            const feedback = document.getElementById('quiz-feedback');
+            const btn = document.getElementById('multi-valider-btn');
+
+            if (isCorrect) {
+                selectedBtns.forEach(b => b.classList.add('correct'));
+                btn.style.display = 'none';
+                feedback.innerHTML = '<span class="text-green-500">Excellent !</span>';
+                feedback.style.display = 'block';
+                correctSound.triggerAttackRelease(['G5', 'C6'], '4n');
+                page.isCompleted = true;
+                document.getElementById('next-btn').disabled = false;
+            } else {
+                page.tries++;
+                if (page.tries >= 3) {
+                    document.querySelectorAll('.quiz-option').forEach(b => {
+                        b.classList.remove('selected', 'wrong');
+                        if (page.answers.includes(b.innerText.trim())) {
+                            b.classList.add('correct');
+                        }
+                    });
+                    btn.style.display = 'none';
+                    feedback.innerHTML = '<span class="text-orange-500">Voici la bonne réponse.</span>';
+                    feedback.style.display = 'block';
+                    page.isCompleted = true;
+                    document.getElementById('next-btn').disabled = false;
+                } else {
+                    selectedBtns.forEach(b => { 
+                        b.classList.add('wrong'); 
+                        setTimeout(() => b.classList.remove('wrong', 'selected'), 1000); 
+                    });
+                    btn.style.display = 'none';
+                    feedback.innerHTML = `<span class="text-red-500">Réessayez ! (Essai ${page.tries}/3)</span>`;
+                    feedback.style.display = 'block';
+                    wrongSound.triggerAttackRelease(['G3', 'F3'], '8n');
+                    
+                    setTimeout(() => {
+                        feedback.style.display = 'none';
+                        btn.style.display = 'flex';
+                    }, 1500);
+                }
+            }
+        };
+
+        /* --- Native HTML5 Drag & Drop (for Desktop) --- */
+        window.allowDrop = function(ev) {
+            ev.preventDefault();
+        };
+
+        window.drag = function(ev) {
+            const page = pages[currentPage];
+            if (page.isCompleted) return;
+            ev.dataTransfer.setData("text", ev.target.id);
+        };
+
+        window.drop = function(ev) {
+            ev.preventDefault();
+            const page = pages[currentPage];
+            if (page.isCompleted) return;
+            
+            var data = ev.dataTransfer.getData("text");
+            var draggedElement = document.getElementById(data);
+            var dropZone = ev.currentTarget.closest('.droppable-area');
+            
+            if (dropZone && draggedElement && dropZone.classList.contains('droppable-area')) {
+                dropZone.appendChild(draggedElement);
+            }
+        };
+
+        /* --- Instant Touch Drag Logic (for Mobile) --- */
+        window.touchStart = function(ev) {
+            const page = pages[currentPage];
+            if (page.isCompleted) return;
+            
+            const target = ev.target;
+            if(target.classList.contains('correct') || target.classList.contains('reveal')) return;
+            
+            draggingItem = target;
+            
+            // Create a visual ghost following the finger
+            ghostEl = draggingItem.cloneNode(true);
+            ghostEl.style.position = 'fixed';
+            ghostEl.style.opacity = '0.9';
+            ghostEl.style.pointerEvents = 'none';
+            ghostEl.style.zIndex = '9999';
+            ghostEl.style.transform = 'scale(1.05) rotate(-2deg)';
+            ghostEl.style.boxShadow = '0 10px 25px rgba(0,0,0,0.15)';
+            ghostEl.style.margin = '0';
+            document.body.appendChild(ghostEl);
+            
+            const touch = ev.touches[0];
+            moveGhost(touch.clientX, touch.clientY);
+            draggingItem.style.opacity = '0.2';
+        };
+
+        window.touchMove = function(ev) {
+            if (!draggingItem || !ghostEl) return;
+            ev.preventDefault(); // Prevents page scroll while dragging
+            const touch = ev.touches[0];
+            moveGhost(touch.clientX, touch.clientY);
+        };
+
+        window.touchEnd = function(ev) {
+            if (!draggingItem || !ghostEl) return;
+            
+            const touch = ev.changedTouches[0];
+            ghostEl.style.display = 'none'; // hide ghost so elementFromPoint registers the drop zone below
+            
+            const dropTarget = document.elementFromPoint(touch.clientX, touch.clientY);
+            const zone = dropTarget ? dropTarget.closest('.droppable-area') : null;
+            
+            if (zone) {
+                zone.appendChild(draggingItem);
+            }
+            
+            ghostEl.remove();
+            draggingItem.style.opacity = '1';
+            draggingItem = null;
+            ghostEl = null;
+        };
+
+        function moveGhost(x, y) {
+            if (ghostEl) {
+                ghostEl.style.left = (x - ghostEl.offsetWidth / 2) + 'px';
+                ghostEl.style.top = (y - ghostEl.offsetHeight / 2) + 'px';
+            }
+        }
+
+        /* --- Validation Matching Quiz --- */
+        window.validateMatchingQuiz = function() {
+            const page = pages[currentPage];
+            if (page.isCompleted) return;
+            
+            let isCorrect = true;
+
+            page.categories.forEach(cat => {
+                const zone = document.querySelector(`.droppable-area[data-zone="${cat}"]`);
+                const itemsInZone = Array.from(zone.querySelectorAll('.draggable-item')).map(el => el.innerText.trim());
+                const correctAnswers = page.answers[cat];
+
+                if (itemsInZone.length !== correctAnswers.length) {
+                    isCorrect = false;
+                } else {
+                    const match = correctAnswers.every(ans => itemsInZone.includes(ans));
+                    if (!match) isCorrect = false;
+                }
+            });
+
+            const feedback = document.getElementById('quiz-feedback');
+            const btn = document.getElementById('match-valider-btn');
+
+            if (isCorrect) {
+                btn.style.display = 'none';
+                feedback.innerHTML = '<span class="text-green-500">Excellent !</span>';
+                feedback.style.display = 'block';
+                correctSound.triggerAttackRelease(['G5', 'C6'], '4n');
+                page.isCompleted = true;
+                document.getElementById('next-btn').disabled = false;
+                
+                document.querySelectorAll('.droppable-area:not([data-zone="pool"])').forEach(z => {
+                    z.classList.add('border-green-400', 'bg-green-50');
+                    z.querySelectorAll('.draggable-item').forEach(item => item.classList.add('correct'));
+                });
+            } else {
+                page.tries++;
+                if (page.tries >= 3) {
+                    page.categories.forEach(cat => {
+                        const zone = document.querySelector(`.droppable-area[data-zone="${cat}"]`);
+                        zone.innerHTML = '';
+                        page.answers[cat].forEach(ans => {
+                            zone.innerHTML += `<div class="draggable-item reveal text-base sm:text-xl px-3 py-1 sm:px-4 sm:py-2">${ans}</div>`;
+                        });
+                    });
+                    document.querySelector('.droppable-area[data-zone="pool"]').innerHTML = '';
+                    
+                    btn.style.display = 'none';
+                    feedback.innerHTML = '<span class="text-orange-500">Voici la bonne réponse.</span>';
+                    feedback.style.display = 'block';
+                    page.isCompleted = true;
+                    document.getElementById('next-btn').disabled = false;
+                } else {
+                    // ** Fix: Return all dragged items to the pool on wrong answer **
+                    const poolZone = document.querySelector('.droppable-area[data-zone="pool"]');
+                    
+                    btn.style.display = 'none';
+                    feedback.innerHTML = `<span class="text-red-500">Réessayez ! (Essai ${page.tries}/3)</span>`;
+                    feedback.style.display = 'block';
+                    wrongSound.triggerAttackRelease(['G3', 'F3'], '8n');
+                    
+                    document.querySelectorAll('.droppable-area:not([data-zone="pool"])').forEach(z => {
+                        // Move items back
+                        z.querySelectorAll('.draggable-item').forEach(item => {
+                            poolZone.appendChild(item);
+                        });
+                        
+                        z.classList.add('animate-shake', 'border-red-400');
+                        setTimeout(() => z.classList.remove('animate-shake', 'border-red-400'), 400);
+                    });
+                    
+                    setTimeout(() => {
+                        feedback.style.display = 'none';
+                        btn.style.display = 'flex';
+                    }, 1500);
+                }
+            }
+        };
+    </script>
+</body>
+</html>
