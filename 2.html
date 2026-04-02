@@ -512,6 +512,8 @@
                         html = `<div class="flex flex-col items-center w-full max-h-full min-h-0"><div class="text-5xl shrink-0 text-indigo-500 mb-4"><i class="ph ph-sparkle"></i></div><p class="desc-text font-medium text-center">${page.text}</p></div>`;
                         nextBtn.style.display = 'none'; prevBtn.style.display = 'flex'; 
                         completionSound.triggerAttackRelease(["E5", "G5", "C6", "E6"], "2n");
+                        // 마지막 페이지 도달 시 부모 창으로 완료 메시지 자동 전송 (버튼 없음)
+                        window.parent.postMessage('lesson_complete', '*');
                         break;
                 }
 
