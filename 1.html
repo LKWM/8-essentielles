@@ -158,7 +158,8 @@
             flex-wrap: wrap;
             gap: 0.25rem;
             transition: all 0.2s;
-            align-content: flex-start;
+            align-content: center; /* 다시 완벽한 중앙 정렬로 복구 */
+            align-items: center;   /* 수직 중앙 정렬 보장 */
             justify-content: center;
             position: relative;
         }
@@ -237,7 +238,6 @@
         let backgroundAudioTimeout = null;
         let transitionSynth, correctSound, completionSound, wrongSound;
 
-        // Custom touch drag state
         let draggingItem = null;
         let ghostEl = null;
 
@@ -351,7 +351,6 @@
                         nextBtn.style.display = 'flex'; prevBtn.style.display = 'flex'; break;
 
                     case 'multi-cards-audio':
-                        // Flex-row forced unconditionally to keep them side by side even on mobile
                         html = `
                             <div class="flex flex-col items-center w-full max-h-full min-h-0">
                                 <div class="flex flex-row gap-2 sm:gap-4 mb-4 sm:mb-8 shrink-0 w-full max-w-4xl justify-center px-0 sm:px-2">
@@ -385,18 +384,18 @@
                         nextBtn.style.display = 'flex'; prevBtn.style.display = 'flex'; break;
 
                     case 'matching-quiz':
-                        // Adaptive layout: stack vertically on mobile (flex-col), side-by-side categories on desktop
                         html = `
-                            <div class="flex flex-col items-center w-full h-full min-h-0 justify-center flex-1">
-                                <h2 class="subtitle-main text-slate-900 mb-2 sm:mb-4 text-center px-2 max-w-2xl shrink-0" style="font-size: clamp(0.95rem, 2.5vh, 1.3rem);">${page.question}</h2>
+                            <div class="flex flex-col items-center w-full max-h-full min-h-0 justify-center flex-1">
+                                <h2 class="subtitle-main text-slate-900 mb-4 sm:mb-6 text-center px-2 max-w-2xl shrink-0" style="font-size: clamp(0.95rem, 2.5vh, 1.3rem);">${page.question}</h2>
                                 
-                                <div class="w-full max-w-4xl shrink-1 min-h-0 flex flex-col gap-2 sm:gap-4 px-2 flex-1 justify-center">
+                                <div class="w-full max-w-4xl shrink min-h-0 flex flex-col gap-3 sm:gap-5 px-2 justify-center">
                                     
                                     <!-- Pool Area -->
-                                    <div class="bg-white p-2 sm:p-3 rounded-xl shadow-sm border border-slate-200 shrink-0">
-                                        <div class="droppable-area w-full bg-slate-50 gap-1 sm:gap-2 p-2 h-[140px] sm:h-[80px]" data-zone="pool" ondragover="allowDrop(event)" ondrop="drop(event)">
+                                    <div class="bg-white p-2 sm:p-3 rounded-xl shadow-sm border border-slate-200 shrink-0 w-full">
+                                        <!-- 고정 px 높이 삭제, 화면 비율 기반의 min-h-[12vh] 적용 -->
+                                        <div class="droppable-area w-full bg-slate-50 gap-1 sm:gap-2 p-2 min-h-[12vh] sm:min-h-[10vh]" data-zone="pool" ondragover="allowDrop(event)" ondrop="drop(event)">
                                             ${!page.isCompleted ? page.options.map((o, i) => `
-                                                <div class="draggable-item text-base sm:text-xl px-3 py-1 sm:px-4 sm:py-2" id="drag-item-${i}" 
+                                                <div class="draggable-item text-sm sm:text-xl px-3 py-1.5 sm:px-4 sm:py-2" id="drag-item-${i}" 
                                                     draggable="true" 
                                                     ondragstart="drag(event)" 
                                                     ontouchstart="touchStart(event)" 
@@ -407,12 +406,12 @@
                                     </div>
 
                                     <!-- Categories Area (Adaptive flex) -->
-                                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 flex-1 min-h-0">
+                                    <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full shrink min-h-0">
                                         ${page.categories.map((c) => `
                                             <div class="bg-indigo-50/50 p-2 sm:p-3 rounded-xl border border-indigo-100 flex flex-col flex-1 min-h-0">
                                                 <h3 class="font-bold text-indigo-800 text-xs sm:text-[0.95rem] mb-1 sm:mb-2 text-center shrink-0 flex items-center justify-center">${c}</h3>
-                                                <div class="droppable-area flex-1 w-full bg-white shadow-inner gap-1 sm:gap-2 p-2 min-h-[50px] sm:min-h-[70px]" data-zone="${c}" ondragover="allowDrop(event)" ondrop="drop(event)">
-                                                    ${page.isCompleted ? page.answers[c].map(ans => `<div class="draggable-item correct text-base sm:text-xl px-3 py-1 sm:px-4 sm:py-2">${ans}</div>`).join('') : ''}
+                                                <div class="droppable-area flex-1 w-full bg-white shadow-inner gap-1 sm:gap-2 p-2 min-h-[10vh] sm:min-h-[12vh]" data-zone="${c}" ondragover="allowDrop(event)" ondrop="drop(event)">
+                                                    ${page.isCompleted ? page.answers[c].map(ans => `<div class="draggable-item correct text-sm sm:text-xl px-3 py-1.5 sm:px-4 sm:py-2">${ans}</div>`).join('') : ''}
                                                 </div>
                                             </div>
                                         `).join('')}
@@ -420,7 +419,7 @@
 
                                 </div>
 
-                                <div class="h-10 sm:h-14 mt-2 sm:mt-4 flex items-center justify-center shrink-0 w-full relative">
+                                <div class="h-10 sm:h-14 mt-4 sm:mt-6 flex items-center justify-center shrink-0 w-full relative">
                                     <button id="match-valider-btn" onclick="validateMatchingQuiz()" class="btn-primary flex rounded-full px-6 py-2 sm:px-10 sm:py-3 font-bold text-sm sm:text-lg shadow-md hover:scale-105 transition-transform absolute" ${page.isCompleted ? 'style="display:none;"' : ''}>Valider</button>
                                     <p id="quiz-feedback" class="text-sm sm:text-lg font-bold m-0 text-center w-full absolute" ${!page.isCompleted ? 'style="display:none;"' : ''}>${page.isCompleted ? '<span class="text-green-500">Excellent !</span>' : ''}</p>
                                 </div>
@@ -557,7 +556,6 @@
             
             draggingItem = target;
             
-            // Create a visual ghost following the finger
             ghostEl = draggingItem.cloneNode(true);
             ghostEl.style.position = 'fixed';
             ghostEl.style.opacity = '0.9';
@@ -575,7 +573,7 @@
 
         window.touchMove = function(ev) {
             if (!draggingItem || !ghostEl) return;
-            ev.preventDefault(); // Prevents page scroll while dragging
+            ev.preventDefault(); 
             const touch = ev.touches[0];
             moveGhost(touch.clientX, touch.clientY);
         };
@@ -584,7 +582,7 @@
             if (!draggingItem || !ghostEl) return;
             
             const touch = ev.changedTouches[0];
-            ghostEl.style.display = 'none'; // hide ghost so elementFromPoint registers the drop zone below
+            ghostEl.style.display = 'none'; 
             
             const dropTarget = document.elementFromPoint(touch.clientX, touch.clientY);
             const zone = dropTarget ? dropTarget.closest('.droppable-area') : null;
@@ -659,7 +657,6 @@
                     page.isCompleted = true;
                     document.getElementById('next-btn').disabled = false;
                 } else {
-                    // ** Fix: Return all dragged items to the pool on wrong answer **
                     const poolZone = document.querySelector('.droppable-area[data-zone="pool"]');
                     
                     btn.style.display = 'none';
@@ -668,7 +665,6 @@
                     wrongSound.triggerAttackRelease(['G3', 'F3'], '8n');
                     
                     document.querySelectorAll('.droppable-area:not([data-zone="pool"])').forEach(z => {
-                        // Move items back
                         z.querySelectorAll('.draggable-item').forEach(item => {
                             poolZone.appendChild(item);
                         });
