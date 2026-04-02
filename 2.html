@@ -513,7 +513,7 @@
                         nextBtn.style.display = 'none'; prevBtn.style.display = 'flex'; 
                         completionSound.triggerAttackRelease(["E5", "G5", "C6", "E6"], "2n");
                         // 마지막 페이지 도달 시 부모 창으로 완료 메시지 자동 전송 (버튼 없음)
-                        window.parent.postMessage('lesson_complete', '*');
+                        window.parent.postMessage({ type: 'lesson_complete' }, '*');
                         break;
                 }
 
