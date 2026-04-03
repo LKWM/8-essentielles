@@ -240,7 +240,7 @@
             { type: 'free-speech', question: "Essayez de le dire vous-même.", targetText: "Merci, au revoir.<br><span class='text-sm font-normal text-slate-500'>(à quelqu’un qui s’en va)</span>", targets: ["감사합니다 안녕히 가세요", "고마워요 안녕히 가세요", "감사합니다 안녕히가세요", "고마워요 안녕히가세요"], koreanHint: "감사합니다 / 고마워요<br>안녕히 가세요.", isCompleted: false },
             { type: 'free-speech', question: "Essayez de le dire vous-même.", targetText: "Je suis désolé, au revoir.<br><span class='text-sm font-normal text-slate-500'>(à quelqu’un qui y reste)</span>", targets: ["죄송합니다 안녕히 계세요", "미안해요 안녕히 계세요", "죄송합니다 안녕히계세요", "미안해요 안녕히계세요"], koreanHint: "죄송합니다 / 미안해요<br>안녕히 계세요.", isCompleted: false },
             { type: 'outro', text: "Excellent ! Vous avez maintenant terminé le programme « 8 phrases essentielles » et vous êtes capable de dire huit phrases en coréen. Bien sûr, savoir saluer ne suffit pas pour communiquer couramment en Corée, mais ça vous permettra de voyager et de rencontrer des Coréens avec beaucoup plus de confiance.", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163880/5-5_nprhec.wav', isCompleted: true },
-            { type: 'outro', text: "Maintenant, choisissez le thème qui vous intéresse parmi les programmes de niveau A1 et continuez votre apprentissage du coréen ! Si vous ne vous sentez pas encore tout à fait à l'aise with les huit phrases apprises, n'hésitez pas à consulter la leçon supplémentaire pour vous entraîner davantage à l'oral.<br><br>Alors, on se retrouve très bientôt dans un autre programme. 안녕히 가세요!", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163725/5-6_qjwy1t.mp3', isCompleted: true }
+            { type: 'outro', text: "Maintenant, choisissez le thème qui vous intéresse parmi les programmes de niveau A1 et continuez votre apprentissage du coréen ! Si vous ne vous sentez pas encore tout à fait à l'aise with les huit phrases appris, n'hésitez pas à consulter la leçon supplémentaire pour vous entraîner davantage à l'oral.<br><br>Alors, on se retrouve très bientôt dans un autre programme. 안녕히 가세요!", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163725/5-6_qjwy1t.mp3', isCompleted: true }
         ];
 
         let currentPage = 0;
@@ -277,7 +277,7 @@
             if (backgroundAudioTimeout) clearTimeout(backgroundAudioTimeout);
             if (!url) return; 
             backgroundAudioTimeout = setTimeout(() => {
-                if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; }
+                if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; currentAudio = null; }
                 currentAudio = new Audio(url);
                 currentAudio.play().catch(e => {});
             }, delay);
@@ -286,7 +286,7 @@
         function playInteractionAudio(url, onEndedCallback = null) {
             if (!url) { if (onEndedCallback) onEndedCallback(); return; }
             if (backgroundAudioTimeout) { clearTimeout(backgroundAudioTimeout); backgroundAudioTimeout = null; }
-            if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; }
+            if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; currentAudio = null; }
             if (interactionAudio) { interactionAudio.pause(); interactionAudio.currentTime = 0; }
             interactionAudio = new Audio(url);
             if (onEndedCallback) interactionAudio.onended = onEndedCallback;
@@ -337,16 +337,18 @@
                     navBar.style.display = 'flex';
                     nextBtn.disabled = !page.isCompleted;
                     prevBtn.disabled = (currentPage === 0);
+                    nextBtn.style.display = (currentPage === 0) ? 'none' : 'flex';
+                    prevBtn.style.display = (currentPage === 0) ? 'none' : 'flex';
                 }
 
                 switch (page.type) {
                     case 'cover':
                         html = `<div class="flex flex-col items-center w-full"><h2 class="subtitle-main">${page.subtitle}</h2><h1 class="title-main">${page.title}</h1><button onclick="movePage(1)" class="mt-4 px-10 py-3 bg-indigo-600 text-white rounded-full text-lg font-bold hover:bg-indigo-700 transition-all shadow-lg shrink-0">${page.btnText}</button></div>`;
-                        nextBtn.style.display = 'none'; prevBtn.style.display = 'none'; break;
+                        break;
 
                     case 'text':
                         html = `<div class="flex flex-col items-center w-full"><p class="desc-text font-medium mt-6">${page.text}</p></div>`;
-                        nextBtn.style.display = 'flex'; prevBtn.style.display = 'flex'; break;
+                        break;
 
                     case 'info-card':
                         html = `
@@ -360,7 +362,7 @@
                                 <p class="desc-text mt-2">${page.text}</p>
                             </div>
                         `;
-                        nextBtn.style.display = 'flex'; prevBtn.style.display = 'flex'; break;
+                        break;
 
                     case 'multi-cards-audio':
                         html = `
@@ -378,7 +380,7 @@
                                 <p class="desc-text mt-2">${page.text}</p>
                             </div>
                         `;
-                        nextBtn.style.display = 'flex'; prevBtn.style.display = 'flex'; break;
+                        break;
 
                     case 'speech':
                         html = `
@@ -394,7 +396,7 @@
                                     ${page.isCompleted ? `
                                         <div class="mic-btn opacity-40 mb-2"><i class="ph ph-check"></i></div>
                                         <p class="${page.hideScore ? 'text-indigo-500' : 'text-green-500'} font-bold status-large mb-2">${page.hideScore ? 'Bien essayé !' : 'Très bien !'}</p>
-                                        ${!page.hideScore ? `<div class="bg-indigo-50 border border-indigo-100 rounded-xl px-4 py-2 flex items-center gap-2"><i class="ph ph-target text-indigo-500 text-xl"></i><span class="text-indigo-600 font-bold">Précision : ${page.score}%</span></div>` : ''}
+                                        ${!page.hideScore && page.score !== undefined ? `<div class="bg-indigo-50 border border-indigo-100 rounded-xl px-4 py-2 flex items-center gap-2"><i class="ph ph-target text-indigo-500 text-xl"></i><span class="text-indigo-600 font-bold">Précision : ${page.score}%</span></div>` : ''}
                                     ` : `
                                         <button id="mic-btn" class="mic-btn opacity-50 cursor-not-allowed" disabled onclick="toggleRecording('${page.target}')"><i class="ph ph-microphone"></i></button>
                                         <p id="speech-status" class="text-slate-500 font-medium text-sm transition-all duration-300 mt-2 text-center">Cliquez sur le micro pour parler</p>
@@ -403,7 +405,7 @@
                                 </div>
                             </div>
                         `;
-                        nextBtn.style.display = 'flex'; prevBtn.style.display = 'flex'; break;
+                        break;
 
                     case 'single-quiz':
                         html = `
@@ -420,7 +422,7 @@
                                 </div>
                             </div>
                         `;
-                        nextBtn.style.display = 'flex'; prevBtn.style.display = 'flex'; break;
+                        break;
 
                     case 'input-quiz':
                         html = `
@@ -438,7 +440,7 @@
                                 </div>
                             </div>
                         `;
-                        nextBtn.style.display = 'flex'; prevBtn.style.display = 'flex'; break;
+                        break;
 
                     case 'free-speech':
                         const showText = page.isCompleted || speechTries >= 2;
@@ -461,11 +463,10 @@
                                 </div>
                             </div>
                         `;
-                        nextBtn.style.display = 'flex'; prevBtn.style.display = 'flex'; break;
+                        break;
 
                     case 'outro':
                         html = `<div class="flex flex-col items-center w-full"><div class="text-5xl shrink-0 text-indigo-500 mb-4"><i class="ph ph-sparkle"></i></div><p class="desc-text font-medium text-center">${page.text}</p></div>`;
-                        nextBtn.style.display = 'none'; prevBtn.style.display = 'flex'; 
                         completionSound.triggerAttackRelease(["E5", "G5", "C6", "E6"], "2n");
                         break;
                 }
@@ -540,7 +541,10 @@
                     mediaRecorder.onstop = async () => {
                         const blob = new Blob(audioChunks, { type: 'audio/wav' });
                         const reader = new FileReader(); reader.readAsDataURL(blob);
-                        reader.onloadend = async () => { verifySpeech(reader.result.split(',')[1], target); };
+                        reader.onloadend = async () => { 
+                            const base64 = reader.result.split(',')[1];
+                            verifySpeech(base64, target); 
+                        };
                         stopMicrophone();
                     };
                     mediaRecorder.start(); btn.classList.add('recording');
@@ -563,14 +567,16 @@
                 const result = await response.json();
                 const recognized = (result.text || "").replace(/[?.,!\s]/g, '');
                 let score = result.score || 0;
+                
                 if (page.type === 'free-speech') {
-                    score = Math.max(...page.targets.map(t => {
-                        const ref = t.replace(/[?.,!\s]/g, '');
-                        if (ref === recognized) return 100;
-                        return calculateSim(ref, recognized);
-                    }));
+                    score = Math.max(...page.targets.map(t => calculateSimilarity(t, recognized)));
+                } else if (score === 0) {
+                    score = calculateSimilarity(referenceText, recognized);
                 }
+                
+                page.score = score;
                 const threshold = page.type === 'free-speech' ? 90 : 50;
+
                 if (score >= threshold) { finishSpeech(score); } 
                 else if (speechTries >= maxTries) { finishSpeechFail(); } 
                 else {
@@ -593,27 +599,12 @@
             renderPage();
         }
 
-        function calculateSim(s1, s2) {
-            let longer = s1.length > s2.length ? s1 : s2; let shorter = s1.length > s2.length ? s2 : s1;
-            if (longer.length === 0) return 100;
-            return ((longer.length - editDist(longer, shorter)) / longer.length) * 100;
-        }
-
-        function editDist(s1, s2) {
-            let costs = [];
-            for (let i = 0; i <= s1.length; i++) {
-                let last = i;
-                for (let j = 0; j <= s2.length; j++) {
-                    if (i === 0) costs[j] = j;
-                    else if (j > 0) {
-                        let current = costs[j - 1];
-                        if (s1[i - 1] !== s2[j - 1]) current = Math.min(current, last, costs[j]) + 1;
-                        costs[j - 1] = last; last = current;
-                    }
-                }
-                if (i > 0) costs[s2.length] = last;
-            }
-            return costs[s2.length];
+        function calculateSimilarity(ref, hyp) {
+            ref = ref.replace(/[?.,!\s]/g, ''); hyp = hyp.replace(/[?.,!\s]/g, ''); if (ref === hyp) return 100;
+            const matrix = Array.from({ length: ref.length + 1 }, (_, i) => [i]);
+            for (let j = 1; j <= hyp.length; j++) matrix[0][j] = j;
+            for (let i = 1; i <= ref.length; i++) for (let j = 1; j <= hyp.length; j++) matrix[i][j] = ref[i-1] === hyp[j-1] ? matrix[i-1][j-1] : Math.min(matrix[i-1][j-1]+1, matrix[i][j-1]+1, matrix[i-1][j]+1);
+            return Math.max(0, Math.round(((Math.max(ref.length, hyp.length) - matrix[ref.length][hyp.length]) / Math.max(ref.length, hyp.length)) * 100));
         }
     </script>
 </body>
