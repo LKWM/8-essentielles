@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>8 phrases essentielles - Se saluer</title>
+    <title>8 phrases essentielles - Saluer</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
@@ -144,8 +144,8 @@
         .btn-primary { background-color: var(--primary); color: white; }
         .btn-secondary { color: #64748B; border: 1px solid #CBD5E1; }
 
-        /* Quiz Styles */
         .quiz-option { cursor: pointer; user-select: none; }
+        .quiz-option.selected { border-color: var(--primary); background: #EEF2FF; color: var(--primary-dark); transform: scale(1.02); }
         .quiz-option.correct { border-color: #10B981 !important; background: #ECFDF5 !important; color: #059669 !important; }
         .quiz-option.wrong { border-color: #EF4444 !important; background: #FEF2F2 !important; color: #DC2626 !important; }
 
@@ -165,9 +165,7 @@
             flex-shrink: 0;
         }
 
-        .mic-btn:disabled {
-            background: #CBD5E1; /* 비활성화 색상 */
-        }
+        .mic-btn:disabled { background: #CBD5E1; }
 
         .mic-btn.recording {
             background: #EF4444;
@@ -216,20 +214,20 @@
 
     <script>
         const pages = [
-            { type: 'cover', subtitle: '8 phrases essentielles', title: 'Se saluer', btnText: 'Commencer', isCompleted: true },
-            { type: 'text', text: "Bonjour ! Aujourd'hui, nous allons apprendre deux expressions de salutation qui sont essentielles lors de l'apprentissage d'une nouvelle langue.", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775115362/2-1_rxajo5.mp3', isCompleted: true },
-            { type: 'info-card', cardText: '안녕하세요?', sub1: 'être en paix ?', sub2: 'Bonjour', cardAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775115667/S2-1_slow_mhbvcd.mp3', text: "Si vous avez déjà regardé des contenus coréens, vous avez peut-être entendu l'expression « 안녕하세요? ». Littéralement, c'est une question qui demande si l'on est en paix et sans problème, ce qui a un sens similaire à « Vous allez bien ? » en français. Mais on l'utilise beaucoup plus comme une salutation quotidienne que comme une question qui attend une réponse.", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775115362/2-2_bfqkk5.mp3', isCompleted: true },
-            { type: 'multi-cards-audio', cards: [{text: '안녕', audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775115741/S2-1-1_ulusxr.mp3'}, {text: '하세요', audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775115742/S2-1-2_qgchuy.mp3'}], text: "Si c'est trop long et que la prononciation vous semble difficile, vous pouvez tout à fait la prononcer en la divisant en deux parties. Cliquez sur la carte ci-dessous !", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775115362/2-3_bzsogo.mp3', isCompleted: true },
-            { type: 'speech', text: 'Répétez après moi.', target: '안녕하세요?', sub1: 'être en paix ?', sub2: 'Bonjour', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775115667/S2-1_slow_mhbvcd.mp3', isCompleted: false, fastForwardOnFail: true },
-            { type: 'speech', text: 'Répétez encore une fois.', target: '안녕하세요?', sub1: 'être en paix ?', sub2: 'Bonjour', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775115666/S2-1_fast_xpnpiw.mp3', isCompleted: false, fastForwardOnFail: true },
-            { type: 'info-card', cardText: '안녕하십니까?', sub1: 'être en paix ?', sub2: 'Bonjour', cardAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775115667/S2-2_slow_a44jas.mp3', text: "« 안녕하십니까 ? » est la phrase conjuguée au registre formel de « 안녕하세요? ». Comme c'est grammaticalement une phrase interrogative, elle se termine par la syllabe « 까 », mais elle s'utilise également comme une salutation plutôt que comme une vraie question. Le registre formel étant utilisé lors d'occasions officielles ou formelles, vous pouvez souvent l'entendre dans les émissions télévisées ou les présentations professionnelles.", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775115362/2-4_x8af7t.mp3', isCompleted: true },
-            { type: 'info-card', cardText: '안녕하십니까?', sub1: 'être en paix ?', sub2: 'Bonjour', cardAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775115667/S2-2_slow_a44jas.mp3', text: "Lorsque la syllabe « 니 » suit la syllabe « 십 », cela se prononce /심니/. C'est un phénomène appelé « nasalisation », qui permet de rendre la prononciation beaucoup plus facile.", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775115363/2-5_tsszwj.wav', isCompleted: true },
-            { type: 'speech', text: 'Répétez après moi.', target: '안녕하십니까?', sub1: 'être en paix ?', sub2: 'Bonjour', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775115667/S2-2_slow_a44jas.mp3', isCompleted: false, fastForwardOnFail: true },
-            { type: 'speech', text: 'Répétez encore une fois.', target: '안녕하십니까?', sub1: 'être en paix ?', sub2: 'Bonjour', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775115666/S2-2_fast_urf0jg.mp3', isCompleted: false, fastForwardOnFail: true },
-            { type: 'single-quiz', question: "À quel registre de langue cette phrase est-elle conjuguée ?", quizAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775115666/S2-1_fast_xpnpiw.mp3', options: ['Formel', 'Poli', 'Informel', 'On ne peut pas savoir'], answer: 'Poli', isCompleted: false },
-            { type: 'input-quiz', question: "Remplissez le blanc.", quizAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775115666/S2-2_fast_urf0jg.mp3', suffix: "하십니까?", answer: "안녕", isCompleted: false },
-            { type: 'free-speech', question: "Essayez de le dire vous-même.", targetText: "Bonjour", targets: ["안녕하세요?", "안녕하십니까?"], hints: ['https://res.cloudinary.com/de76i94ia/video/upload/v1775115667/S2-1_slow_mhbvcd.mp3', 'https://res.cloudinary.com/de76i94ia/video/upload/v1775115667/S2-2_slow_a44jas.mp3'], isCompleted: false },
-            { type: 'outro', text: "Parfait ! Dans la leçon 3, vous apprendrez les phrases utilisées pour remercier quelqu'un. Alors, à la prochaine !", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775115547/2-6_cflg9y.wav', isCompleted: true }
+            { type: 'cover', subtitle: '8 phrases essentielles', title: 'Saluer', btnText: 'Commencer', isCompleted: true },
+            { type: 'text', text: "안녕하세요 ! Bienvenue dans le programme « 8 phrases essentielles ». Dans ce cours, nous allons apprendre 8 expressions coréennes fondamentales. Pour commencer cette première leçon, nous allons apprendre comment saluer en coréen.", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775130105/2-1_mveonb.wav', isCompleted: true },
+            { type: 'info-card', cardText: '안녕하세요.', sub2: 'Bonjour', cardAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775130109/S2-1_slow_c87i9e.mp3', text: "En coréen, on utilise « 안녕하세요 » pour dire bonjour. Comme elle se termine par la syllabe « 요 », c'est une phrase polie. On l'utilise donc la plupart du temps pour saluer les personnes que l'on rencontre pour la première fois ou qui sont plus âgées que soi.", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775130105/2-2_mreizt.wav', isCompleted: true },
+            { type: 'speech', text: 'Répétez après moi.', target: '안녕하세요.', sub2: 'Bonjour', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775130109/S2-1_slow_c87i9e.mp3', isCompleted: false },
+            { type: 'info-card', cardText: '안녕하세요.', sub2: 'Bonjour', cardAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775130107/S2-1_fast_qf0m6s.mp3', text: "Le mot « 안녕 » signifie « paix ». On dit donc « 안녕하세요 » pour souhaiter la paix à son interlocuteur. Bien qu'il s'écrive avec un point d'interrogation, il est aujourd'hui davantage perçu comme une affirmation. Il n'est donc pas nécessaire de monter l'intonation à la fin de la phrase.", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775130105/2-3_m7unp2.wav', isCompleted: true },
+            { type: 'speech', text: 'Répétez encore une fois.', target: '안녕하세요.', sub2: 'Bonjour', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775130107/S2-1_fast_qf0m6s.mp3', isCompleted: false },
+            { type: 'info-card', cardText: '안녕하십니까.', sub2: 'Bonjour', cardAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775130108/S2-2_slow_k933on.mp3', text: "« 안녕하십니까 » a la même signification que « 안녕하세요 », mais c'est une expression beaucoup plus formelle. On l'utilise principalement dans des situations très protocolaires, comme à la télévision, lors de présentations officielles ou dans le milieu militaire.", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775130105/2-4_scj89x.mp3', isCompleted: true },
+            { type: 'speech', text: 'Répétez après moi.', target: '안녕하십니까.', sub2: 'Bonjour', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775130108/S2-2_slow_k933on.mp3', isCompleted: false },
+            { type: 'info-card', cardText: '안녕하십니까.', sub2: 'Bonjour', cardAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775130106/S2-2_fast_b1onbi.mp3', text: "Attention à la prononciation ! Bien que cela s'écrive « -십니 », on le prononce /심니/ avec un son /m/. C'est ce qu'on appelle la nasalisation en coréen. Essayez de bien mémoriser cette règle, car elle est très fréquente !", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775130106/2-5_zryvwy.mp3', isCompleted: true },
+            { type: 'speech', text: 'Répétez encore une fois.', target: '안녕하십니까.', sub2: 'Bonjour', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775130106/S2-2_fast_b1onbi.mp3', isCompleted: false },
+            { type: 'single-quiz', question: "Lequel est le plus formel ?", options: ['안녕하세요.', '안녕하십니까.'], answer: '안녕하십니까.', isCompleted: false },
+            { type: 'input-quiz', question: "Remplissez le blanc.", quizAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775130107/S2-1_fast_qf0m6s.mp3', suffix: "하세요.", answer: "안녕", isCompleted: false },
+            { type: 'free-speech', question: "Essayez de le dire vous-même.", targetText: "Bonjour", targets: ["안녕하세요", "안녕하십니까"], hints: ['https://res.cloudinary.com/de76i94ia/video/upload/v1775130109/S2-1_slow_c87i9e.mp3', 'https://res.cloudinary.com/de76i94ia/video/upload/v1775130108/S2-2_slow_k933on.mp3'], isCompleted: false },
+            { type: 'outro', text: "Parfait ! La première leçon est terminée. Vous savez maintenant saluer en coréen. Pas si difficile, n'est-ce pas ? Alors, passez à la leçon 3 pour apprendre à dire merci. 안녕하세요!", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775130106/2-6_n7m538.mp3', isCompleted: true }
         ];
 
         let currentPage = 0;
@@ -260,84 +258,41 @@
         };
 
         function stopAllAudio() {
-            if (backgroundAudioTimeout) {
-                clearTimeout(backgroundAudioTimeout);
-                backgroundAudioTimeout = null;
-            }
-            if (currentAudio) {
-                currentAudio.pause();
-                currentAudio.currentTime = 0;
-                currentAudio = null;
-            }
-            if (interactionAudio) {
-                interactionAudio.pause();
-                interactionAudio.currentTime = 0;
-                interactionAudio = null;
-            }
+            if (backgroundAudioTimeout) { clearTimeout(backgroundAudioTimeout); backgroundAudioTimeout = null; }
+            if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; currentAudio = null; }
+            if (interactionAudio) { interactionAudio.pause(); interactionAudio.currentTime = 0; interactionAudio = null; }
         }
 
         function playBackgroundAudio(url, delay = 0) {
             if (backgroundAudioTimeout) clearTimeout(backgroundAudioTimeout);
             if (!url) return; 
             backgroundAudioTimeout = setTimeout(() => {
-                if (currentAudio) {
-                    currentAudio.pause();
-                    currentAudio.currentTime = 0;
-                    currentAudio = null;
-                }
+                if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; }
                 currentAudio = new Audio(url);
                 currentAudio.play().catch(e => {});
             }, delay);
         }
 
-        // Callback을 허용하도록 업그레이드 된 재생 함수
         function playInteractionAudio(url, onEndedCallback = null) {
-            if (!url) {
-                if (onEndedCallback) onEndedCallback();
-                return;
-            }
-            if (backgroundAudioTimeout) {
-                clearTimeout(backgroundAudioTimeout);
-                backgroundAudioTimeout = null;
-            }
-            if (currentAudio) {
-                currentAudio.pause();
-                currentAudio.currentTime = 0;
-                currentAudio = null;
-            }
-            if (interactionAudio) {
-                interactionAudio.pause();
-                interactionAudio.currentTime = 0;
-            }
+            if (!url) { if (onEndedCallback) onEndedCallback(); return; }
+            if (backgroundAudioTimeout) { clearTimeout(backgroundAudioTimeout); backgroundAudioTimeout = null; }
+            if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; }
+            if (interactionAudio) { interactionAudio.pause(); interactionAudio.currentTime = 0; }
             interactionAudio = new Audio(url);
-            if (onEndedCallback) {
-                interactionAudio.onended = onEndedCallback;
-            }
-            interactionAudio.play().catch(e => {
-                if (onEndedCallback) onEndedCallback();
-            });
+            if (onEndedCallback) interactionAudio.onended = onEndedCallback;
+            interactionAudio.play().catch(e => { if (onEndedCallback) onEndedCallback(); });
         }
 
-        // 오디오가 재생되는 동안 마이크 버튼을 잠그는 래퍼 함수
         window.playInteractionWithMicLock = function(url) {
             const micBtn = document.getElementById('mic-btn');
+            // 녹음 중이면 오디오 재생 방지
+            if (micBtn && micBtn.classList.contains('recording')) return;
             
-            // 이미 녹음 중이라면 오디오 재생 차단
-            if (micBtn && micBtn.classList.contains('recording')) {
-                return;
-            }
-            
-            // 마이크 버튼 비활성화 시각 및 논리 처리
-            if (micBtn) {
-                micBtn.disabled = true;
-                micBtn.classList.add('opacity-50', 'cursor-not-allowed');
-            }
-            
+            if (micBtn) { micBtn.disabled = true; micBtn.classList.add('opacity-50', 'cursor-not-allowed'); }
             playInteractionAudio(url, () => {
                 const btn = document.getElementById('mic-btn');
                 if (btn && !btn.classList.contains('recording')) {
-                    btn.disabled = false;
-                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    btn.disabled = false; btn.classList.remove('opacity-50', 'cursor-not-allowed');
                 }
             });
         };
@@ -349,7 +304,7 @@
                 stopMicrophone(); 
                 transitionSynth.triggerAttackRelease("C4", "8n");
                 currentPage = nextIdx;
-                speechTries = 0; // Reset speech tries on page change
+                speechTries = 0; 
                 renderPage();
             }
         }
@@ -360,6 +315,7 @@
             const nextBtn = document.getElementById('next-btn');
             const prevBtn = document.getElementById('prev-btn');
             const progress = document.getElementById('progress');
+            const navBar = document.querySelector('.nav-bar');
 
             progress.innerText = `Page ${currentPage + 1} / ${pages.length}`;
             container.classList.remove('active');
@@ -368,8 +324,13 @@
                 container.innerHTML = '';
                 let html = '';
 
-                nextBtn.disabled = (currentPage === pages.length - 1) || !page.isCompleted;
-                prevBtn.disabled = (currentPage === 0 || currentPage === pages.length - 1);
+                if (page.type === 'outro') {
+                    navBar.style.display = 'none';
+                } else {
+                    navBar.style.display = 'flex';
+                    nextBtn.disabled = (currentPage === pages.length - 1) || !page.isCompleted;
+                    prevBtn.disabled = (currentPage === 0 || currentPage === pages.length - 1);
+                }
 
                 switch (page.type) {
                     case 'cover':
@@ -383,29 +344,12 @@
                     case 'info-card':
                         html = `
                             <div class="flex flex-col items-center w-full max-h-full min-h-0">
-                                <div class="char-card mb-6 px-6 sm:px-12 shrink-0 ${page.cardAudio ? 'cursor-pointer hover:scale-105' : 'cursor-default'}" ${page.cardAudio ? `onclick="playInteractionAudio('${page.cardAudio}')"` : ''}>
+                                <div class="char-card mb-6 px-6 sm:px-12 shrink-0 ${page.cardAudio ? 'cursor-pointer hover:scale-105 hover:border-indigo-300' : 'cursor-default'}" ${page.cardAudio ? `onclick="playInteractionAudio('${page.cardAudio}')"` : ''}>
                                     <div class="font-bold text-indigo-700 tracking-tight text-center leading-tight" style="font-size: clamp(2rem, 6vh, 4rem);">${page.cardText}</div>
-                                    ${page.sub1 ? `<p class="text-indigo-400 font-bold uppercase tracking-widest text-xs sm:text-sm mt-3 text-center px-2">${page.sub1}</p>` : ''}
-                                    ${page.sub2 ? `<p class="text-slate-500 font-medium text-sm sm:text-base mt-1 text-center">${page.sub2}</p>` : ''}
-                                    ${page.cardAudio ? `<div class="mt-3 text-indigo-300 text-center"><i class="ph ph-speaker-high text-2xl sm:text-3xl"></i></div>` : ''}
+                                    ${page.sub2 ? `<p class="text-slate-600 font-medium text-sm sm:text-base mt-1 text-center">${page.sub2}</p>` : ''}
+                                    ${page.cardAudio ? `<div class="mt-3 text-indigo-400 text-center"><i class="ph ph-speaker-high text-2xl sm:text-3xl"></i></div>` : ''}
                                 </div>
                                 <p class="desc-text mt-2">${page.text}</p>
-                            </div>
-                        `;
-                        nextBtn.style.display = 'flex'; prevBtn.style.display = 'flex'; break;
-
-                    case 'multi-cards-audio':
-                        html = `
-                            <div class="flex flex-col items-center w-full max-h-full min-h-0">
-                                <p class="desc-text mb-6">${page.text}</p>
-                                <div class="flex flex-row gap-2 sm:gap-4 shrink-0 w-full max-w-2xl justify-center px-2">
-                                    ${page.cards.map(c => `
-                                        <div class="char-card !min-w-0 flex-1 cursor-pointer px-2 py-6 sm:px-6 sm:py-8 hover:scale-105 hover:border-indigo-200 transition-all border-2 border-slate-100 shadow-sm" onclick="playInteractionAudio('${c.audio}')">
-                                            <div class="font-bold text-indigo-700 text-center flex-1 flex flex-col items-center justify-center w-full leading-snug" style="font-size: clamp(2rem, 5vw, 3.5rem);">${c.text}</div>
-                                            <div class="mt-4 sm:mt-6 text-indigo-300 text-center shrink-0"><i class="ph ph-speaker-high text-xl sm:text-3xl"></i></div>
-                                        </div>
-                                    `).join('')}
-                                </div>
                             </div>
                         `;
                         nextBtn.style.display = 'flex'; prevBtn.style.display = 'flex'; break;
@@ -416,7 +360,6 @@
                                 <h2 class="subtitle-main text-slate-900 mb-4">${page.text}</h2>
                                 <div class="char-card shrink-0 mb-4 cursor-pointer hover:scale-105 hover:shadow-lg hover:border-indigo-300 transition-all border-2 border-slate-100" onclick="playInteractionWithMicLock('${page.targetAudio}')">
                                     <div id="target-char" class="font-bold tracking-tight text-center leading-tight transition-colors duration-500 ${page.isCompleted && !page.hideScore ? 'text-green-500' : 'text-indigo-600'}" style="font-size: clamp(2rem, 6vh, 4rem);">${page.target}</div>
-                                    ${page.sub1 ? `<p class="text-indigo-500 font-bold uppercase tracking-widest text-xs sm:text-sm mt-3 text-center px-2">${page.sub1}</p>` : ''}
                                     ${page.sub2 ? `<p class="text-slate-600 font-medium text-sm sm:text-base mt-1 text-center">${page.sub2}</p>` : ''}
                                     <div class="mt-3 bg-indigo-50 text-indigo-500 rounded-full p-2 hover:bg-indigo-100 transition-colors"><i class="ph ph-speaker-high text-2xl"></i></div>
                                 </div>
@@ -424,7 +367,6 @@
                                     ${page.isCompleted ? `
                                         <div class="mic-btn opacity-40 mb-2"><i class="ph ph-check"></i></div>
                                         <p class="${page.hideScore ? 'text-indigo-500' : 'text-green-500'} font-bold status-large mb-2">${page.hideScore ? 'Bien essayé !' : 'Très bien !'}</p>
-                                        ${!page.hideScore && page.score !== undefined ? `<div class="bg-indigo-50 border border-indigo-100 rounded-xl px-4 py-2 flex items-center gap-2"><i class="ph ph-target text-indigo-500 text-xl"></i><span class="text-indigo-600 font-bold">Précision : ${page.score}%</span></div>` : ''}
                                     ` : `
                                         <button id="mic-btn" class="mic-btn opacity-50 cursor-not-allowed" disabled onclick="toggleRecording('${page.target}')"><i class="ph ph-microphone"></i></button>
                                         <p id="speech-status" class="text-slate-500 font-medium text-sm transition-all duration-300 mt-2 text-center">Cliquez sur le micro pour parler</p>
@@ -436,16 +378,18 @@
                         nextBtn.style.display = 'flex'; prevBtn.style.display = 'flex'; break;
 
                     case 'single-quiz':
+                        if (!page.tries) page.tries = 0;
                         html = `
                             <div class="flex flex-col items-center w-full max-h-full min-h-0 justify-center flex-1">
                                 <h2 class="subtitle-main text-slate-900 mb-6 text-center px-4 max-w-2xl">${page.question}</h2>
                                 ${page.quizAudio ? `<button onclick="playInteractionAudio('${page.quizAudio}')" class="w-16 h-16 shrink-0 rounded-full bg-indigo-50 text-indigo-600 text-2xl flex items-center justify-center hover:bg-indigo-100 transition-all shadow-inner mb-6"><i class="ph ph-speaker-high"></i></button>` : ''}
-                                <div class="flex flex-col sm:flex-row flex-wrap justify-center gap-2 sm:gap-3 w-full max-w-3xl shrink-0 px-2">
+                                <div class="flex flex-col sm:flex-row flex-wrap justify-center gap-2 sm:gap-3 w-full max-w-3xl mb-6 shrink-0 px-2">
                                     ${page.options.map(opt => `
-                                        <button class="quiz-option px-4 py-3 sm:px-6 sm:py-4 text-base sm:text-xl font-bold rounded-xl border-2 border-slate-200 bg-white hover:border-indigo-300 transition-all ${page.isCompleted && page.answer === opt ? 'correct' : ''}" onclick="validateSingleQuiz(this, '${opt}')">${opt}</button>
+                                        <button class="quiz-option px-4 py-2 sm:px-6 sm:py-3 text-base sm:text-xl font-bold rounded-xl border-2 border-slate-200 bg-white hover:border-indigo-300 transition-all ${page.isCompleted && page.answer === opt ? 'correct' : ''}" onclick="toggleSingleOption(this)">${opt}</button>
                                     `).join('')}
                                 </div>
-                                <div class="h-14 mt-4 flex items-center justify-center shrink-0 w-full relative">
+                                <div class="h-14 mt-2 flex items-center justify-center shrink-0 w-full relative">
+                                    <button id="single-valider-btn" onclick="validateSingleQuiz()" class="btn-primary flex rounded-full px-8 py-2 sm:px-10 sm:py-3 font-bold text-sm sm:text-lg shadow-md hover:scale-105 transition-transform absolute" ${page.isCompleted ? 'style="display:none;"' : ''}>Valider</button>
                                     <p id="quiz-feedback" class="text-base sm:text-lg font-bold m-0 text-center w-full absolute" ${!page.isCompleted ? 'style="display:none;"' : ''}>${page.isCompleted ? '<span class="text-green-500">Excellent !</span>' : ''}</p>
                                 </div>
                             </div>
@@ -458,12 +402,10 @@
                             <div class="flex flex-col items-center w-full max-h-full min-h-0 justify-center flex-1">
                                 <h2 class="subtitle-main text-slate-900 mb-6 text-center px-4 max-w-2xl">${page.question}</h2>
                                 ${page.quizAudio ? `<button onclick="playInteractionAudio('${page.quizAudio}')" class="w-16 h-16 shrink-0 rounded-full bg-indigo-50 text-indigo-600 text-2xl flex items-center justify-center hover:bg-indigo-100 transition-all shadow-inner mb-8"><i class="ph ph-speaker-high"></i></button>` : ''}
-                                
                                 <div class="flex items-center justify-center gap-1 sm:gap-2 mb-8">
                                     <input type="text" id="blank-input" class="w-24 sm:w-32 border-b-4 border-indigo-400 bg-transparent text-center focus:outline-none text-indigo-600 text-3xl sm:text-5xl pb-1" autocomplete="off" ${page.isCompleted ? `value="${page.answer}" disabled` : ''} />
                                     <span class="text-3xl sm:text-5xl font-bold text-slate-800">${page.suffix}</span>
                                 </div>
-
                                 <div class="h-14 mt-2 flex items-center justify-center shrink-0 w-full relative">
                                     <button id="input-valider-btn" onclick="validateInputQuiz()" class="btn-primary flex rounded-full px-8 py-2 sm:px-10 sm:py-3 font-bold text-sm sm:text-lg shadow-md hover:scale-105 transition-transform absolute" ${page.isCompleted ? 'style="display:none;"' : ''}>Valider</button>
                                     <p id="quiz-feedback" class="text-base sm:text-lg font-bold m-0 text-center w-full absolute" ${!page.isCompleted ? 'style="display:none;"' : ''}>${page.isCompleted ? '<span class="text-green-500">Excellent !</span>' : ''}</p>
@@ -481,10 +423,9 @@
                                 <div class="char-card shrink-0 mb-4 px-10 py-10 flex flex-col items-center">
                                     <div class="font-bold tracking-tight text-center leading-tight text-slate-800" style="font-size: clamp(2rem, 6vh, 4rem);">${page.targetText}</div>
                                     <div id="free-speech-text" class="mt-4 text-indigo-600 font-bold text-xl sm:text-2xl transition-opacity duration-300 ${showText ? 'block' : 'hidden'}">
-                                        안녕하세요? / 안녕하십니까?
+                                        안녕하세요 / 안녕하십니까
                                     </div>
                                 </div>
-
                                 <div id="speech-ui-container" class="flex flex-col items-center shrink-0 min-h-[140px]">
                                     ${page.isCompleted ? `
                                         <div class="mic-btn opacity-40 mb-2"><i class="ph ph-check"></i></div>
@@ -495,7 +436,6 @@
                                         <p id="speech-tries" class="text-[10px] text-slate-400 mt-1 uppercase">Essai: ${speechTries} / 3</p>
                                     `}
                                 </div>
-
                                 <div id="free-speech-hints" class="gap-4 mt-2 transition-opacity duration-300 ${showHints ? 'flex' : 'hidden'}">
                                     ${page.hints.map((h, idx) => `
                                         <button onclick="playInteractionWithMicLock('${h}')" class="flex flex-col items-center gap-2 px-4 py-2 bg-indigo-50 rounded-xl text-indigo-600 hover:bg-indigo-100 transition-colors">
@@ -510,9 +450,7 @@
 
                     case 'outro':
                         html = `<div class="flex flex-col items-center w-full max-h-full min-h-0"><div class="text-5xl shrink-0 text-indigo-500 mb-4"><i class="ph ph-sparkle"></i></div><p class="desc-text font-medium text-center">${page.text}</p></div>`;
-                        nextBtn.style.display = 'none'; prevBtn.style.display = 'flex'; 
                         completionSound.triggerAttackRelease(["E5", "G5", "C6", "E6"], "2n");
-                        // 마지막 페이지 도달 시 부모 창으로 완료 메시지 자동 전송 (버튼 없음)
                         window.parent.postMessage({ type: 'lesson_complete' }, '*');
                         break;
                 }
@@ -521,336 +459,141 @@
                 requestAnimationFrame(() => adjustTextFit());
                 container.classList.add('active');
 
-                if (page.audio) {
-                    playBackgroundAudio(page.audio, 500);
-                }
-
-                // 자동 재생 시 마이크 버튼 비활성화 (오디오 재생 완료 후 활성화됨)
-                if (page.type === 'speech' && !page.isCompleted) {
-                    setTimeout(() => {
-                        playInteractionWithMicLock(page.targetAudio);
-                    }, 500);
-                } else if (page.type === 'speech' && page.isCompleted) {
-                    setTimeout(() => {
-                        playInteractionAudio(page.targetAudio);
-                    }, 500);
-                }
+                if (page.audio) playBackgroundAudio(page.audio, page.type === 'outro' ? 500 : 0);
+                if (page.type === 'speech' && !page.isCompleted) setTimeout(() => playInteractionWithMicLock(page.targetAudio), 500);
             }, 50);
         }
 
         function adjustTextFit() {
             const descTexts = document.querySelectorAll('.desc-text');
             descTexts.forEach(descText => {
-                descText.style.fontSize = '';
-                descText.style.lineHeight = '';
-                
+                descText.style.fontSize = ''; descText.style.lineHeight = '';
                 let size = parseFloat(window.getComputedStyle(descText).fontSize);
-                let attempts = 40; 
-                const minSize = 13; 
-                
+                let attempts = 40; const minSize = 13; 
                 while (descText.scrollHeight > descText.clientHeight + 2 && size > minSize && attempts > 0) {
-                    size -= 0.5;
-                    descText.style.fontSize = size + 'px';
-                    descText.style.lineHeight = '1.35';
-                    attempts--;
+                    size -= 0.5; descText.style.fontSize = size + 'px'; descText.style.lineHeight = '1.35'; attempts--;
                 }
             });
         }
 
-        /* --- Logic for Single Select Quiz --- */
-        window.validateSingleQuiz = function(btn, selected) {
-            const page = pages[currentPage];
-            if (page.isCompleted) return;
+        window.toggleSingleOption = function(btn) {
+            const page = pages[currentPage]; if (page.isCompleted) return;
+            document.querySelectorAll('.quiz-option').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+        };
 
-            const isCorrect = (selected === page.answer);
+        window.validateSingleQuiz = function() {
+            const page = pages[currentPage]; if (page.isCompleted) return;
+            const selectedBtn = document.querySelector('.quiz-option.selected');
+            if (!selectedBtn) return;
+            const isCorrect = (selectedBtn.innerText.trim() === page.answer);
             const feedback = document.getElementById('quiz-feedback');
-
+            const btn = document.getElementById('single-valider-btn');
             if (isCorrect) {
-                document.querySelectorAll('.quiz-option').forEach(b => b.classList.remove('wrong'));
-                btn.classList.add('correct');
-                feedback.innerHTML = '<span class="text-green-500">Excellent !</span>';
-                feedback.style.display = 'block';
-                correctSound.triggerAttackRelease(['G5', 'C6'], '4n');
-                page.isCompleted = true;
-                document.getElementById('next-btn').disabled = false;
+                selectedBtn.classList.remove('selected'); selectedBtn.classList.add('correct');
+                btn.style.display = 'none'; feedback.innerHTML = '<span class="text-green-500">Excellent !</span>'; feedback.style.display = 'block';
+                correctSound.triggerAttackRelease(['G5', 'C6'], '4n'); page.isCompleted = true; document.getElementById('next-btn').disabled = false;
             } else {
-                btn.classList.add('wrong', 'animate-shake');
-                feedback.innerHTML = `<span class="text-red-500">Réessayez !</span>`;
-                feedback.style.display = 'block';
+                selectedBtn.classList.add('wrong', 'animate-shake'); btn.style.display = 'none';
+                feedback.innerHTML = `<span class="text-red-500">Réessayez !</span>`; feedback.style.display = 'block';
                 wrongSound.triggerAttackRelease(['G3', 'F3'], '8n');
-                
-                setTimeout(() => {
-                    btn.classList.remove('wrong', 'animate-shake');
-                    feedback.style.display = 'none';
-                }, 1000);
+                setTimeout(() => { selectedBtn.classList.remove('wrong', 'animate-shake', 'selected'); feedback.style.display = 'none'; btn.style.display = 'flex'; }, 1000);
             }
         };
 
-        /* --- Logic for Input Quiz --- */
         window.validateInputQuiz = function() {
-            const page = pages[currentPage];
-            if (page.isCompleted) return;
-
+            const page = pages[currentPage]; if (page.isCompleted) return;
             const inputEl = document.getElementById('blank-input');
-            const userVal = inputEl.value.trim().replace(/\s+/g, '');
-            const targetVal = page.answer.replace(/\s+/g, '');
-            
-            const isCorrect = (userVal === targetVal);
+            const isCorrect = (inputEl.value.trim().replace(/\s+/g, '') === page.answer.replace(/\s+/g, ''));
             const feedback = document.getElementById('quiz-feedback');
             const btn = document.getElementById('input-valider-btn');
-
             if (isCorrect) {
-                btn.style.display = 'none';
-                feedback.innerHTML = '<span class="text-green-500">Excellent !</span>';
-                feedback.style.display = 'block';
-                inputEl.disabled = true;
-                correctSound.triggerAttackRelease(['G5', 'C6'], '4n');
-                page.isCompleted = true;
-                document.getElementById('next-btn').disabled = false;
+                btn.style.display = 'none'; feedback.innerHTML = '<span class="text-green-500">Excellent !</span>'; feedback.style.display = 'block';
+                inputEl.disabled = true; correctSound.triggerAttackRelease(['G5', 'C6'], '4n'); page.isCompleted = true; document.getElementById('next-btn').disabled = false;
             } else {
                 page.tries++;
                 if (page.tries >= 2) {
-                    btn.style.display = 'none';
-                    inputEl.value = page.answer;
-                    inputEl.disabled = true;
-                    feedback.innerHTML = '<span class="text-orange-500">Voici la bonne réponse.</span>';
-                    feedback.style.display = 'block';
-                    page.isCompleted = true;
-                    document.getElementById('next-btn').disabled = false;
+                    btn.style.display = 'none'; inputEl.value = page.answer; inputEl.disabled = true;
+                    feedback.innerHTML = '<span class="text-orange-500">Voici la bonne réponse.</span>'; feedback.style.display = 'block';
+                    page.isCompleted = true; document.getElementById('next-btn').disabled = false;
                 } else {
-                    btn.style.display = 'none';
-                    feedback.innerHTML = `<span class="text-red-500">Réessayez ! (Essai ${page.tries}/2)</span>`;
-                    feedback.style.display = 'block';
-                    wrongSound.triggerAttackRelease(['G3', 'F3'], '8n');
-                    
-                    inputEl.closest('div').classList.add('animate-shake');
-                    
-                    setTimeout(() => {
-                        inputEl.closest('div').classList.remove('animate-shake');
-                        feedback.style.display = 'none';
-                        btn.style.display = 'flex';
-                    }, 1500);
+                    btn.style.display = 'none'; feedback.innerHTML = `<span class="text-red-500">Réessayez ! (Essai ${page.tries}/2)</span>`; feedback.style.display = 'block';
+                    wrongSound.triggerAttackRelease(['G3', 'F3'], '8n'); inputEl.closest('div').classList.add('animate-shake');
+                    setTimeout(() => { inputEl.closest('div').classList.remove('animate-shake'); feedback.style.display = 'none'; btn.style.display = 'flex'; }, 1500);
                 }
             }
         };
 
-        /* --- Microphone & Audio Processing --- */
         async function toggleRecording(target) {
-            const btn = document.getElementById('mic-btn');
-            const status = document.getElementById('speech-status');
-            const page = pages[currentPage];
-            const maxTries = page.type === 'free-speech' ? 3 : 2;
-
-            if (!btn || btn.disabled) return; // 추가 방어 코드
-
-            if (btn.classList.contains('recording')) {
-                stopRecordingManually();
-            } else {
-                if (speechTries >= maxTries) return;
+            const btn = document.getElementById('mic-btn'); if (!btn || btn.disabled) return;
+            if (btn.classList.contains('recording')) { stopRecordingManually(); } else {
                 try {
                     currentStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                    mediaRecorder = new MediaRecorder(currentStream);
-                    audioChunks = [];
+                    mediaRecorder = new MediaRecorder(currentStream); audioChunks = [];
                     mediaRecorder.ondataavailable = (event) => audioChunks.push(event.data);
                     mediaRecorder.onstop = async () => {
-                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                        const reader = new FileReader();
-                        reader.readAsDataURL(audioBlob);
-                        reader.onloadend = async () => {
-                            const base64Audio = reader.result.split(',')[1];
-                            await verifySpeech(base64Audio, target);
-                        };
+                        // 녹음 중단 시 즉시 하드웨어 점유 해제
                         stopMicrophone();
+                        const base64Audio = (await new Promise(r => { const f = new FileReader(); f.onload = () => r(f.result); f.readAsDataURL(new Blob(audioChunks, { type: 'audio/wav' })); })).split(',')[1];
+                        await verifySpeech(base64Audio, target);
                     };
-                    mediaRecorder.start();
-                    btn.classList.add('recording');
-                    if(status) status.innerText = "Écoute...";
+                    mediaRecorder.start(); btn.classList.add('recording');
                     if (recordingTimer) clearTimeout(recordingTimer);
-                    recordingTimer = setTimeout(() => {
-                        if (mediaRecorder && mediaRecorder.state === "recording") stopRecordingManually();
-                    }, RECORDING_LIMIT);
-                } catch (err) { if(status) status.innerText = "Erreur micro."; }
+                    recordingTimer = setTimeout(() => { if (mediaRecorder && mediaRecorder.state === "recording") stopRecordingManually(); }, RECORDING_LIMIT);
+                } catch (err) {}
             }
         }
 
-        function stopRecordingManually() {
-            if (mediaRecorder && mediaRecorder.state === "recording") mediaRecorder.stop();
-            const btn = document.getElementById('mic-btn');
-            if (btn) btn.classList.remove('recording');
-            if (recordingTimer) clearTimeout(recordingTimer);
+        function stopRecordingManually() { 
+            if (mediaRecorder && mediaRecorder.state === "recording") {
+                mediaRecorder.stop(); 
+            } 
+            stopMicrophone(); // 즉시 하드웨어 점유 해제
+            const btn = document.getElementById('mic-btn'); 
+            if (btn) btn.classList.remove('recording'); 
+            if (recordingTimer) clearTimeout(recordingTimer); 
         }
-
-        function stopMicrophone() {
-            if (currentStream) {
-                currentStream.getTracks().forEach(track => track.stop());
-                currentStream = null;
-            }
-        }
-
-        function calculateSimilarity(ref, hyp) {
-            if (!ref && !hyp) return 100;
-            if (!ref || !hyp) return 0;
-            
-            // Remove spaces and punctuation to calculate pure similarity
-            ref = ref.replace(/[?.,!\s]/g, '');
-            hyp = hyp.replace(/[?.,!\s]/g, '');
-            
-            if (ref === hyp) return 100;
-
-            const matrix = [];
-            for (let i = 0; i <= ref.length; i++) { matrix[i] = [i]; }
-            for (let j = 0; j <= hyp.length; j++) { matrix[0][j] = j; }
-
-            for (let i = 1; i <= ref.length; i++) {
-                for (let j = 1; j <= hyp.length; j++) {
-                    if (ref.charAt(i - 1) === hyp.charAt(j - 1)) {
-                        matrix[i][j] = matrix[i - 1][j - 1];
-                    } else {
-                        matrix[i][j] = Math.min(
-                            matrix[i - 1][j - 1] + 1, 
-                            Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1)
-                        );
-                    }
-                }
-            }
-            const distance = matrix[ref.length][hyp.length];
-            const maxLength = Math.max(ref.length, hyp.length);
-            return Math.max(0, Math.round(((maxLength - distance) / maxLength) * 100));
+        
+        function stopMicrophone() { 
+            if (currentStream) { 
+                currentStream.getTracks().forEach(track => track.stop()); 
+                currentStream = null; 
+            } 
         }
 
         async function verifySpeech(audioBase64, referenceText) {
-            const status = document.getElementById('speech-status');
-            const triesDisplay = document.getElementById('speech-tries');
-            const charText = document.getElementById('target-char');
-            const page = pages[currentPage];
-            const maxTries = page.type === 'free-speech' ? 3 : 2;
-            
-            speechTries++;
-            if(triesDisplay) triesDisplay.innerText = `Essai: ${speechTries} / ${maxTries}`;
-
+            const status = document.getElementById('speech-status'); const triesDisplay = document.getElementById('speech-tries');
+            const page = pages[currentPage]; const maxTries = page.type === 'free-speech' ? 3 : 2;
+            speechTries++; if(triesDisplay) triesDisplay.innerText = `Essai: ${speechTries} / ${maxTries}`;
             try {
-                // Pass languageCode: Kor, and the first reference text to bias correctly if needed
-                let callReferenceText = referenceText || (page.type === 'free-speech' ? page.targets[0] : "");
-                
-                const response = await fetch(CLOVA_API_FUNCTION_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ audioBase64: audioBase64, languageCode: "Kor", referenceText: callReferenceText })
-                });
-                
-                const result = await response.json();
-                const recognizedText = result.text || result.recognizedText || result.value || "";
-                
-                let score = 0;
-
-                if (page.type === 'free-speech') {
-                    // Check against all allowed targets
-                    score = Math.max(...page.targets.map(t => calculateSimilarity(t, recognizedText)));
-                } else {
-                    score = result.score || result.confidence;
-                    if (score === undefined || score === null) {
-                        score = calculateSimilarity(referenceText, recognizedText);
-                    }
-                }
-                
+                const res = await fetch(CLOVA_API_FUNCTION_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ audioBase64: audioBase64, languageCode: "Kor", referenceText: referenceText || page.targets[0] }) });
+                const result = await res.json();
+                let recognizedText = result.text || result.recognizedText || "";
+                let score = page.type === 'free-speech' ? Math.max(...page.targets.map(t => calculateSimilarity(t, recognizedText))) : (result.score || calculateSimilarity(referenceText, recognizedText));
                 page.score = score;
-
                 if (score >= 50) {
-                    // Success
-                    correctSound.triggerAttackRelease(['G5', 'C6'], '4n');
-                    page.isCompleted = true;
-                    if(charText) charText.className = "font-bold tracking-tight text-center leading-tight transition-colors duration-500 text-green-500";
-                    
-                    const container = document.getElementById('speech-ui-container');
-                    if(container) {
-                        container.innerHTML = `
-                            <div class="mic-btn opacity-40 mb-2"><i class="ph ph-check"></i></div>
-                            <p class="text-green-500 font-bold status-large mb-2">Très bien !</p>
-                            ${page.type !== 'free-speech' ? `<div class="bg-indigo-50 border border-indigo-100 rounded-xl px-4 py-2 flex items-center gap-2"><i class="ph ph-target text-indigo-500 text-xl"></i><span class="text-indigo-600 font-bold">Précision : ${page.score}%</span></div>` : ''}
-                        `;
-                    }
-
-                    // Reveal Text and Hints for free-speech on Success
-                    if (page.type === 'free-speech') {
-                        const textEl = document.getElementById('free-speech-text');
-                        const hintsEl = document.getElementById('free-speech-hints');
-                        if (textEl) { textEl.classList.remove('hidden'); textEl.classList.add('block'); }
-                        if (hintsEl) { hintsEl.classList.remove('hidden'); hintsEl.classList.add('flex'); }
-                    }
-
+                    correctSound.triggerAttackRelease(['G5', 'C6'], '4n'); page.isCompleted = true;
+                    document.getElementById('speech-ui-container').innerHTML = `<div class="mic-btn opacity-40 mb-2"><i class="ph ph-check"></i></div><p class="text-green-500 font-bold status-large mb-2">Très bien !</p>${page.type !== 'free-speech' ? `<div class="bg-indigo-50 border border-indigo-100 rounded-xl px-4 py-2 flex items-center gap-2"><i class="ph ph-target text-indigo-500 text-xl"></i><span class="text-indigo-600 font-bold">Précision : ${page.score}%</span></div>` : ''}`;
+                    if (page.type === 'free-speech') { document.getElementById('free-speech-text').classList.replace('hidden', 'block'); document.getElementById('free-speech-hints').classList.replace('hidden', 'flex'); }
+                    document.getElementById('next-btn').disabled = false;
+                } else if (speechTries >= maxTries) {
+                    page.isCompleted = true; page.hideScore = true; correctSound.triggerAttackRelease(['G5', 'C6'], '4n');
+                    document.getElementById('speech-ui-container').innerHTML = `<div class="mic-btn opacity-40 mb-2"><i class="ph ph-check"></i></div><p class="text-indigo-500 font-bold status-large mb-2">Bien essayé !</p>`;
+                    if (page.type === 'free-speech') { document.getElementById('free-speech-text').classList.replace('hidden', 'block'); document.getElementById('free-speech-hints').classList.replace('hidden', 'flex'); }
                     document.getElementById('next-btn').disabled = false;
                 } else {
-                    // Fail
-                    if (speechTries >= maxTries) {
-                        // Max tries reached
-                        page.isCompleted = true;
-                        page.hideScore = true;
-                        correctSound.triggerAttackRelease(['G5', 'C6'], '4n'); // Soft pass sound
-                        
-                        const container = document.getElementById('speech-ui-container');
-                        if(container) {
-                            container.innerHTML = `
-                                <div class="mic-btn opacity-40 mb-2"><i class="ph ph-check"></i></div>
-                                <p class="text-indigo-500 font-bold status-large mb-2">Bien essayé !</p>
-                            `;
-                        }
-
-                        // Reveal Text and Hints for free-speech on 3rd Fail
-                        if (page.type === 'free-speech') {
-                            const textEl = document.getElementById('free-speech-text');
-                            const hintsEl = document.getElementById('free-speech-hints');
-                            if (textEl) { textEl.classList.remove('hidden'); textEl.classList.add('block'); }
-                            if (hintsEl) { hintsEl.classList.remove('hidden'); hintsEl.classList.add('flex'); }
-                        }
-
-                        document.getElementById('next-btn').disabled = false;
-                    } else {
-                        // Let try again
-                        if (page.type === 'free-speech') {
-                            if (speechTries === 1) {
-                                const hintsEl = document.getElementById('free-speech-hints');
-                                if (hintsEl) { hintsEl.classList.remove('hidden'); hintsEl.classList.add('flex'); }
-                            } else if (speechTries === 2) {
-                                const textEl = document.getElementById('free-speech-text');
-                                if (textEl) { textEl.classList.remove('hidden'); textEl.classList.add('block'); }
-                            }
-                        } else {
-                            playInteractionWithMicLock(page.targetAudio);
-                        }
-                        
-                        if (status) {
-                            status.innerText = "Essayons encore une fois !";
-                            status.className = "text-orange-500 font-bold transition-all duration-300 transform scale-105 mt-2 text-center";
-                        }
-                    }
+                    if (page.type === 'free-speech') { if (speechTries === 1) document.getElementById('free-speech-hints').classList.replace('hidden', 'flex'); else if (speechTries === 2) document.getElementById('free-speech-text').classList.replace('hidden', 'block'); } else playInteractionWithMicLock(page.targetAudio);
+                    if (status) { status.innerText = "Essayons encore une fois !"; status.className = "text-orange-500 font-bold mt-2 text-center"; }
                 }
-            } catch (error) {
-                // Fallback on API Error: Handle gracefully based on tries
-                if (speechTries >= maxTries) {
-                    page.isCompleted = true;
-                    page.hideScore = true;
-                    const container = document.getElementById('speech-ui-container');
-                    if(container) {
-                        container.innerHTML = `
-                            <div class="mic-btn opacity-40 mb-2"><i class="ph ph-check"></i></div>
-                            <p class="text-indigo-500 font-bold status-large mb-2">Bien essayé !</p>
-                        `;
-                    }
-                    if (page.type === 'free-speech') {
-                         document.getElementById('free-speech-hints').style.display = 'flex';
-                    }
-                    document.getElementById('next-btn').disabled = false;
-                } else {
-                    if (status) {
-                        status.innerText = "Erreur de connexion. Réessayez.";
-                        status.className = "text-red-500 font-bold mt-2 text-center";
-                    }
-                    if (page.type === 'free-speech') {
-                         page.showHints = true;
-                         document.getElementById('free-speech-hints').style.display = 'flex';
-                    }
-                }
-            }
+            } catch (error) { if (speechTries >= maxTries) { page.isCompleted = true; document.getElementById('next-btn').disabled = false; } }
+        }
+
+        function calculateSimilarity(ref, hyp) {
+            ref = ref.replace(/[?.,!\s]/g, ''); hyp = hyp.replace(/[?.,!\s]/g, ''); if (ref === hyp) return 100;
+            const matrix = Array.from({ length: ref.length + 1 }, (_, i) => [i]);
+            for (let j = 1; j <= hyp.length; j++) matrix[0][j] = j;
+            for (let i = 1; i <= ref.length; i++) for (let j = 1; j <= hyp.length; j++) matrix[i][j] = ref[i-1] === hyp[j-1] ? matrix[i-1][j-1] : Math.min(matrix[i-1][j-1]+1, matrix[i][j-1]+1, matrix[i-1][j]+1);
+            return Math.max(0, Math.round(((Math.max(ref.length, hyp.length) - matrix[ref.length][hyp.length]) / Math.max(ref.length, hyp.length)) * 100));
         }
     </script>
 </body>
