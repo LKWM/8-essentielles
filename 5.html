@@ -207,13 +207,16 @@
             { type: 'speech', text: 'Répétez encore une fois.', target: '안녕히 가세요.', sub1: 'Partez bien', sub2: 'Au revoir', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163898/S5-1_fast_ygzkq9.mp3', isCompleted: false },
             { type: 'info-card', cardText: '안녕히 계세요.', sub1: 'Restez bien', sub2: 'Au revoir', cardAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163897/S5-1_slow_eh2ta1.mp3', text: "En revanche, lorsque c'est vous qui partez, on dit « 안녕히 계세요 » au lieu de « 안녕히 가세요 ». Cette phrase signifie littéralement « restez bien» , « restez en paix », et s'adresse à la personne qui reste sur place.", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163880/5-3_cbug0p.wav', isCompleted: true },
             { type: 'speech', text: 'Répétez après moi.', target: '안녕히 계세요.', sub1: 'Restez bien', sub2: 'Au revoir', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163897/S5-1_slow_eh2ta1.mp3', isCompleted: false },
-            { type: 'multi-cards-audio', cards: [{text: '안녕히 가세요.', audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163898/S5-1_fast_ygzkq9.mp3'}, {text: '안녕히 계세요.', audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163900/S5-2_fast_aqienh.mp3'}], text: "Comme le français ne fait pas la distinction entre la personne qui part et celle qui reste pour dire au revoir, il faut beaucoup de pratique pour utiliser naturellement ces deux phrases dans la vie quotidienne. Écoutez et répétez-les plusieurs fois.", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163878/5-4_spnkp8.wav', isCompleted: true },
-            { type: 'speech', text: 'Répétez encore une fois.', target: '안녕히 계세요.', sub1: 'Restez bien', sub2: 'Au revoir', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163900/S5-2_fast_aqienh.mp3', isCompleted: false },
-            { type: 'single-quiz', question: "À quel registre de langue cette phrase est-elle conjuguée ?", quizAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163900/S5-2_fast_aqienh.mp3', options: ['Formel', 'Poli', 'Informel', 'On ne peut pas savoir'], answer: 'Poli', isCompleted: false },
+            { type: 'multi-cards-audio', cards: [
+                {text: '안녕히 가세요.', sub1: 'Partez bien', sub2: 'Au revoir', audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163900/S5-2_fast_aqienh.mp3'}, 
+                {text: '안녕히 계세요.', sub1: 'Restez bien', sub2: 'Au revoir', audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163898/S5-1_fast_ygzkq9.mp3'}
+            ], text: "Comme le français ne fait pas la distinction entre la personne qui part et celle qui reste pour dire au revoir, il faut beaucoup de pratique pour utiliser naturellement ces deux phrases dans la vie quotidienne. Écoutez et répétez-les plusieurs fois.", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163878/5-4_spnkp8.wav', isCompleted: true },
+            { type: 'speech', text: 'Répétez encore une fois.', target: '안녕히 계세요.', sub1: 'Restez bien', sub2: 'Au revoir', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163898/S5-1_fast_ygzkq9.mp3', isCompleted: false },
+            { type: 'single-quiz', question: "À quel registre de langue cette phrase est-elle conjuguée ?", quizAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163898/S5-1_fast_ygzkq9.mp3', options: ['Formel', 'Poli', 'Informel', 'On ne peut pas savoir'], answer: 'Poli', isCompleted: false },
             { type: 'single-quiz', question: "내가 떠나고 상대방이 머무를 때 뭐라고 인사해요 ?", options: ['안녕히 가세요.', '안녕히 계세요.'], answer: '안녕히 계세요.', isCompleted: false },
             { type: 'single-quiz', question: "떠나는 사람에게 뭐라고 인사해요 ?", options: ['안녕히 가세요.', '안녕히 계세요.'], answer: '안녕히 가세요.', isCompleted: false },
-            { type: 'input-quiz', question: "Remplissez le blanc.", quizAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163898/S5-1_fast_ygzkq9.mp3', prefix: "안녕히", suffix: ".", answer: "가세요", isCompleted: false },
-            { type: 'input-quiz', question: "Remplissez le blanc.", quizAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163900/S5-2_fast_aqienh.mp3', prefix: "", suffix: ".", answer: "안녕히 계세요", isCompleted: false },
+            { type: 'input-quiz', question: "Remplissez le blanc.", quizAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163900/S5-2_fast_aqienh.mp3', prefix: "안녕히", suffix: ".", answer: "가세요", isCompleted: false },
+            { type: 'input-quiz', question: "Remplissez le blanc.", quizAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163898/S5-1_fast_ygzkq9.mp3', prefix: "", suffix: ".", answer: "안녕히 계세요", isCompleted: false },
             { type: 'free-speech', question: "Essayez de le dire vous-même.", targetText: "Merci, au revoir.<br><span class='text-sm sm:text-base font-normal text-slate-500'>(à quelqu’un qui s’en va)</span>", targets: ["감사합니다 안녕히 가세요", "고마워요 안녕히 가세요", "감사합니다 안녕히가세요", "고마워요 안녕히가세요"], koreanHint: "감사합니다 / 고마워요<br>안녕히 가세요.", hints: ['https://res.cloudinary.com/de76i94ia/video/upload/v1775130145/S3-1_slow_mxihxt.wav', 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163901/S5-2_slow_vdqp3o.mp3'], isCompleted: false },
             { type: 'free-speech', question: "Essayez de le dire vous-même.", targetText: "Je suis désolé, au revoir.<br><span class='text-sm sm:text-base font-normal text-slate-500'>(à quelqu’un qui y reste)</span>", targets: ["죄송합니다 안녕히 계세요", "미안해요 안녕히 계세요", "죄송합니다 안녕히가세요", "미안해요 안녕히가세요"], koreanHint: "죄송합니다 / 미안해요<br>안녕히 계세요.", hints: ['https://res.cloudinary.com/de76i94ia/video/upload/v1775136123/S4-1_slow_yckqpy.mp3', 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163897/S5-1_slow_eh2ta1.mp3'], isCompleted: false },
             { type: 'outro1', text: "Excellent ! Vous avez maintenant terminé le programme « 8 phrases essentielles » et vous êtes capable de dire huit phrases en coréen. Bien sûr, savoir saluer ne suffit pas pour communiquer couramment en Corée, mais ça vous permettra de voyager et de rencontrer des Coréens avec beaucoup plus de confiance.", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163880/5-5_nprhec.wav', isCompleted: true },
@@ -275,7 +278,6 @@
 
         window.playInteractionWithMicLock = function(url) {
             const micBtn = document.getElementById('mic-btn');
-            // 녹음 중 오디오 재생 차단 (울림/끊김 방지)
             if (micBtn && micBtn.classList.contains('recording')) return;
             
             if (micBtn) { micBtn.disabled = true; micBtn.classList.add('opacity-50', 'cursor-not-allowed'); }
@@ -360,8 +362,10 @@
                                 <div class="flex flex-row gap-2 sm:gap-4 mb-4 sm:mb-8 shrink-0 w-full max-w-4xl justify-center px-0 sm:px-2">
                                     ${page.cards.map(c => `
                                         <div class="char-card !min-w-0 flex-1 cursor-pointer px-2 py-4 sm:px-6 sm:py-6 hover:scale-105 hover:border-indigo-200 transition-all border-2 border-slate-100 shadow-sm" onclick="playInteractionAudio('${c.audio}')">
-                                            <div class="text-indigo-700 text-center flex-1 flex flex-col items-center justify-center w-full leading-snug" style="font-size: clamp(0.9rem, 3vw, 1.5rem);">${c.text}</div>
-                                            <div class="mt-2 sm:mt-6 text-indigo-300 text-center shrink-0"><i class="ph ph-speaker-high text-xl sm:text-3xl"></i></div>
+                                            <div class="text-indigo-700 text-center flex-1 flex flex-col items-center justify-center w-full leading-snug font-bold" style="font-size: clamp(0.9rem, 3vw, 1.5rem);">${c.text}</div>
+                                            ${c.sub1 ? `<p class="text-indigo-400 font-bold uppercase tracking-widest text-[10px] sm:text-xs mt-2 text-center">${c.sub1}</p>` : ''}
+                                            ${c.sub2 ? `<p class="text-slate-600 font-medium text-[10px] sm:text-xs text-center">${c.sub2}</p>` : ''}
+                                            <div class="mt-2 sm:mt-4 text-indigo-300 text-center shrink-0"><i class="ph ph-speaker-high text-xl sm:text-2xl"></i></div>
                                         </div>
                                     `).join('')}
                                 </div>
@@ -549,7 +553,6 @@
                     mediaRecorder = new MediaRecorder(currentStream); audioChunks = [];
                     mediaRecorder.ondataavailable = (event) => audioChunks.push(event.data);
                     mediaRecorder.onstop = async () => {
-                        // 녹음 중단 시 즉시 하드웨어 점유 해제
                         stopMicrophone();
                         const base64Audio = (await new Promise(r => { const f = new FileReader(); f.onload = () => r(f.result); f.readAsDataURL(new Blob(audioChunks, { type: 'audio/wav' })); })).split(',')[1];
                         await verifySpeech(base64Audio, target);
@@ -563,7 +566,6 @@
 
         function stopRecordingManually() { 
             if (mediaRecorder && mediaRecorder.state === "recording") mediaRecorder.stop(); 
-            // 수동 중단 시에도 즉시 하드웨어 해제
             stopMicrophone();
             const btn = document.getElementById('mic-btn'); 
             if (btn) btn.classList.remove('recording'); 
