@@ -94,6 +94,9 @@
             box-sizing: border-box;
         }
 
+        .desc-text::-webkit-scrollbar { width: 6px; }
+        .desc-text::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
+
         .char-card {
             background: white;
             border-radius: clamp(1rem, 3vh, 2rem);
@@ -168,6 +171,9 @@
 
         .status-large { font-size: clamp(1.2rem, 3.5vh, 1.8rem); font-weight: 600; }
 
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+        .animate-shake { animation: shake 0.4s; }
+
         @media (max-width: 640px) { .nav-bar { padding: 0 1rem; } .btn-nav span { display: none; } }
     </style>
 </head>
@@ -190,27 +196,28 @@
     <script>
         const pages = [
             { type: 'cover', subtitle: '8 phrases essentielles', title: 'Leçon supplémentaire - 100% Oral', btnText: 'Commencer', isCompleted: true },
-            { type: 'info-only', cardText: '지금까지 배운 표현들을 다시 한번 따라 해 보세요.', sub2: 'Répétez une fois de plus les expressions que vous avez apprises.', isCompleted: true },
-            // Part 1: Repeat (Pages 2-9)
-            { type: 'speech', text: 'Répétez après moi.', display: '안녕하세요?', sub1: 'être en paix ?', sub2: 'Bonjour', target: '안녕하세요', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194335/S6-1_nosfbm.mp3', isCompleted: false },
-            { type: 'speech', text: 'Répétez après moi.', display: '안녕하십니까?', sub1: 'être en paix ?', sub2: 'Bonjour', target: '안녕하십니까', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194335/S6-2_bp3og9.mp3', isCompleted: false },
-            { type: 'speech', text: 'Répétez après moi.', display: '감사합니다.', sub2: 'Merci', target: '감사합니다', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194340/S6-3_qxlhmh.mp3', isCompleted: false },
-            { type: 'speech', text: 'Répétez après moi.', display: '고마워요.', sub2: 'Merci', target: '고마워요', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194341/S6-4_fqapuj.mp3', isCompleted: false },
-            { type: 'speech', text: 'Répétez après moi.', display: '죄송합니다.', sub2: 'Je suis désolé.', target: '죄송합니다', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194343/S6-5_yhxcgd.mp3', isCompleted: false },
-            { type: 'speech', text: 'Répétez après moi.', display: '미안해요.', sub2: 'Je suis désolé.', target: '미안해요', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194345/S6-6_zlk2bg.mp3', isCompleted: false },
-            { type: 'speech', text: 'Répétez après moi.', display: '안녕히 가세요.', sub1: 'Partez bien.', sub2: 'Au revoir.', target: '안녕히 가세요', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194347/S6-7_tcwrhf.mp3', isCompleted: false },
-            { type: 'speech', text: 'Répétez après moi.', display: '안녕히 계세요.', sub1: 'Restez bien.', sub2: 'Au revoir.', target: '안녕히 계세요', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194349/S6-8_krqqgv.mp3', isCompleted: false },
+            { type: 'info-only', cardText: '지금까지 배운 표현들을 다시 한번 따라 해 보세요.', sub2: 'Répétez une fois de plus les expressions que vous avez appris.', isCompleted: true },
             
-            // Part 2: Speak (Pages 10-18)
+            // Part 1: Repeat (2-9)
+            { type: 'speech', mode: 'repeat', text: 'Répétez après moi.', display: '안녕하세요?', sub1: 'être en paix ?', sub2: 'Bonjour', target: '안녕하세요', threshold: 50, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194335/S6-1_nosfbm.mp3', isCompleted: false },
+            { type: 'speech', mode: 'repeat', text: 'Répétez après moi.', display: '안녕하십니까?', sub1: 'être en paix ?', sub2: 'Bonjour', target: '안녕하십니까', threshold: 50, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194335/S6-2_bp3og9.mp3', isCompleted: false },
+            { type: 'speech', mode: 'repeat', text: 'Répétez après moi.', display: '감사합니다.', sub2: 'Merci', target: '감사합니다', threshold: 50, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194340/S6-3_qxlhmh.mp3', isCompleted: false },
+            { type: 'speech', mode: 'repeat', text: 'Répétez après moi.', display: '고마워요.', sub2: 'Merci', target: '고마워요', threshold: 50, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194341/S6-4_fqapuj.mp3', isCompleted: false },
+            { type: 'speech', mode: 'repeat', text: 'Répétez après moi.', display: '죄송합니다.', sub2: 'Je suis désolé.', target: '죄송합니다', threshold: 50, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194343/S6-5_yhxcgd.mp3', isCompleted: false },
+            { type: 'speech', mode: 'repeat', text: 'Répétez après moi.', display: '미안해요.', sub2: 'Je suis désolé.', target: '미안해요', threshold: 50, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194345/S6-6_zlk2bg.mp3', isCompleted: false },
+            { type: 'speech', mode: 'repeat', text: 'Répétez après moi.', display: '안녕히 가세요.', sub1: 'Partez bien.', sub2: 'Au revoir.', target: '안녕히 가세요', threshold: 50, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194347/S6-7_tcwrhf.mp3', isCompleted: false },
+            { type: 'speech', mode: 'repeat', text: 'Répétez après moi.', display: '안녕히 계세요.', sub1: 'Restez bien.', sub2: 'Au revoir.', target: '안녕히 계세요', threshold: 50, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194349/S6-8_krqqgv.mp3', isCompleted: false },
+            
+            // Part 2: Speaking (11-18)
             { type: 'info-only', cardText: '한국어로 말해 보세요.', sub2: 'Parlez en coréen.', isCompleted: true },
-            { type: 'speech', text: '한국어로 말해 보세요.', display: '__하세요?', sub1: 'être en paix ?', sub2: 'Bonjour', target: '안녕하세요', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194335/S6-1_nosfbm.mp3', isCompleted: false },
-            { type: 'speech', text: '한국어로 말해 보세요.', display: '안녕____?', sub1: 'être en paix ?', sub2: 'Bonjour', target: '안녕하십니까', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194335/S6-2_bp3og9.mp3', isCompleted: false },
-            { type: 'speech', text: '한국어로 말해 보세요.', display: '__합니다.', sub2: 'Merci', target: '감사합니다', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194340/S6-3_qxlhmh.mp3', isCompleted: false },
-            { type: 'speech', text: '한국어로 말해 보세요.', display: '고마__.', sub2: 'Merci', target: '고마워요', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194341/S6-4_fqapuj.mp3', isCompleted: false },
-            { type: 'speech', text: '한국어로 말해 보세요.', display: '__합니다.', sub2: 'Je suis désolé.', target: '죄송합니다', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194343/S6-5_yhxcgd.mp3', isCompleted: false },
-            { type: 'speech', text: '한국어로 말해 보세요.', display: '__해요.', sub2: 'Je suis désolé.', target: '미안해요', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194345/S6-6_zlk2bg.mp3', isCompleted: false },
-            { type: 'speech', text: '한국어로 말해 보세요.', display: '안녕히 ___.', sub1: 'Partez bien.', sub2: 'Au revoir.', target: '안녕히 가세요', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194347/S6-7_tcwrhf.mp3', isCompleted: false },
-            { type: 'speech', text: '한국어로 말해 보세요.', display: '___ _세요.', sub1: 'Restez bien.', sub2: 'Au revoir.', target: '안녕히 계세요', targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194349/S6-8_krqqgv.mp3', isCompleted: false },
+            { type: 'speech', mode: 'speaking', text: '한국어로 말해 보세요.', display: '__하세요?', sub1: 'être en paix ?', sub2: 'Bonjour', target: '안녕하세요', threshold: 80, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194335/S6-1_nosfbm.mp3', isCompleted: false },
+            { type: 'speech', mode: 'speaking', text: '한국어로 말해 보세요.', display: '안녕____?', sub1: 'être en paix ?', sub2: 'Bonjour', target: '안녕하십니까', threshold: 80, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194335/S6-2_bp3og9.mp3', isCompleted: false },
+            { type: 'speech', mode: 'speaking', text: '한국어로 말해 보세요.', display: '__합니다.', sub2: 'Merci', target: '감사합니다', threshold: 80, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194340/S6-3_qxlhmh.mp3', isCompleted: false },
+            { type: 'speech', mode: 'speaking', text: '한국어로 말해 보세요.', display: '고마__.', sub2: 'Merci', target: '고마워요', threshold: 80, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194341/S6-4_fqapuj.mp3', isCompleted: false },
+            { type: 'speech', mode: 'speaking', text: '한국어로 말해 보세요.', display: '__합니다.', sub2: 'Je suis désolé.', target: '죄송합니다', threshold: 80, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194343/S6-5_yhxcgd.mp3', isCompleted: false },
+            { type: 'speech', mode: 'speaking', text: '한국어로 말해 보세요.', display: '__해요.', sub2: 'Je suis désolé.', target: '미안해요', threshold: 80, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194345/S6-6_zlk2bg.mp3', isCompleted: false },
+            { type: 'speech', mode: 'speaking', text: '한국어로 말해 보세요.', display: '안녕히 ___.', sub1: 'Partez bien.', sub2: 'Au revoir.', target: '안녕히 가세요', threshold: 80, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194347/S6-7_tcwrhf.mp3', isCompleted: false },
+            { type: 'speech', mode: 'speaking', text: '한국어로 말해 보세요.', display: '___ _세요.', sub1: 'Restez bien.', sub2: 'Au revoir.', target: '안녕히 계세요', threshold: 80, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194349/S6-8_krqqgv.mp3', isCompleted: false },
             
             { type: 'outro', text: "Bravo ! Vous n'avez vraiment plus de soucis à vous faire pour votre voyage en Corée désormais, n'est-ce pas ? Continuez à étudier le coréen dans nos prochains programmes pour apprendre encore plus d'expressions et de mots. Si jamais vous confondez les salutations, vous pouvez revenir ici quand vous le souhaitez. Alors, à très bientôt !", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194337/6-outro_ukwzgm.wav', isCompleted: true }
         ];
@@ -227,9 +234,7 @@
         let speechTries = 0;
         let recordingTimer = null;
         const RECORDING_LIMIT = 6000; 
-
-        const BASE_44_ORIGIN = "https://coreeno.base44.app";
-        const CLOVA_API_FUNCTION_URL = BASE_44_ORIGIN + '/api/functions/naverClovaSpeech';
+        const CLOVA_API_FUNCTION_URL = 'https://coreeno.base44.app/api/functions/naverClovaSpeech';
 
         window.onload = () => {
             Tone.Destination.volume.value = -8;
@@ -239,6 +244,7 @@
             completionSound = new Tone.PolySynth().toDestination();
             renderPage();
             window.addEventListener('blur', stopAllAudio);
+            window.addEventListener('resize', adjustTextFit);
         };
 
         function stopAllAudio() {
@@ -306,10 +312,6 @@
                 container.innerHTML = '';
                 let html = '';
 
-                navBar.style.display = 'flex';
-                nextBtn.style.display = 'flex';
-                prevBtn.style.display = 'flex';
-
                 if (page.type === 'outro') {
                     navBar.style.display = 'none';
                     if (!window.lessonCompletedSent) {
@@ -318,37 +320,49 @@
                         window.lessonCompletedSent = true;
                     }
                 } else {
-                    nextBtn.disabled = (currentPage === pages.length - 1) || !page.isCompleted;
-                    prevBtn.disabled = (currentPage === 0 || currentPage === pages.length - 1);
+                    navBar.style.display = 'flex';
+                    nextBtn.disabled = !page.isCompleted;
+                    prevBtn.disabled = (currentPage === 0);
+                    nextBtn.style.display = (currentPage === 0) ? 'none' : 'flex';
+                    prevBtn.style.display = (currentPage === 0) ? 'none' : 'flex';
                 }
 
                 switch (page.type) {
                     case 'cover':
                         html = `<div class="flex flex-col items-center w-full"><h2 class="subtitle-main">${page.subtitle}</h2><h1 class="title-main">${page.title}</h1><button onclick="movePage(1)" class="mt-4 px-10 py-3 bg-indigo-600 text-white rounded-full text-lg font-bold hover:bg-indigo-700 transition-all shadow-lg shrink-0">${page.btnText}</button></div>`;
-                        nextBtn.style.display = 'none'; prevBtn.style.display = 'none'; break;
+                        break;
 
                     case 'info-only':
                         html = `<div class="flex flex-col items-center w-full"><div class="char-card mb-6 px-6 sm:px-12 shrink-0"><div class="font-bold text-indigo-700 text-center leading-tight" style="font-size: clamp(1.2rem, 4vh, 2.5rem);">${page.cardText}</div>${page.sub2 ? `<p class="text-slate-500 font-medium text-sm sm:text-base mt-4 text-center px-4">${page.sub2}</p>` : ''}</div></div>`;
                         break;
 
                     case 'speech':
+                        // showAudio logic: 
+                        // repeat 모드 -> 항상 보임
+                        // speaking 모드 -> 완료되었거나 2회 이상 탈락 시 보임 (speechTries가 2일 때 보임)
+                        const showAudio = (page.mode === 'repeat') || (page.isCompleted) || (speechTries >= 2);
+                        const displayText = (page.mode === 'speaking' && page.isCompleted && page.hideScore) ? page.target : page.display;
+                        
                         html = `
                             <div class="flex flex-col items-center w-full">
                                 <h2 class="subtitle-main text-slate-900 mb-4">${page.text}</h2>
-                                <div class="char-card shrink-0 mb-4 cursor-pointer hover:scale-105 hover:shadow-lg hover:border-indigo-300 transition-all border-2 border-slate-100" onclick="playInteractionWithMicLock('${page.targetAudio}')">
-                                    <div id="target-char" class="font-bold tracking-tight text-center leading-tight transition-colors duration-500 ${page.isCompleted && !page.hideScore ? 'text-green-500' : 'text-indigo-600'}" style="font-size: clamp(2rem, 6vh, 4rem);">${page.display}</div>
+                                <div class="char-card shrink-0 mb-4 ${showAudio ? 'cursor-pointer hover:scale-105 hover:shadow-lg hover:border-indigo-300' : 'cursor-default'} transition-all border-2 border-slate-100" ${showAudio ? `onclick="playInteractionWithMicLock('${page.targetAudio}')"` : ''}>
+                                    <div id="target-char" class="font-bold tracking-tight text-center leading-tight transition-colors duration-500 ${page.isCompleted && !page.hideScore ? 'text-green-500' : 'text-indigo-600'}" style="font-size: clamp(2rem, 6vh, 4rem);">${displayText}</div>
                                     ${page.sub1 ? `<p class="text-indigo-400 font-bold uppercase tracking-widest text-xs sm:text-sm mt-3 text-center px-2">${page.sub1}</p>` : ''}
                                     ${page.sub2 ? `<p class="text-slate-600 font-medium text-sm sm:text-base mt-1 text-center px-4">${page.sub2}</p>` : ''}
-                                    <div class="mt-3 bg-indigo-50 text-indigo-500 rounded-full p-2 hover:bg-indigo-100 transition-colors"><i class="ph ph-speaker-high text-2xl"></i></div>
+                                    <div class="mt-3 bg-indigo-50 text-indigo-500 rounded-full p-2 hover:bg-indigo-100 transition-colors ${showAudio ? 'block' : 'invisible'}">
+                                        <i class="ph ph-speaker-high text-2xl"></i>
+                                    </div>
                                 </div>
                                 <div id="speech-ui-container" class="flex flex-col items-center shrink-0 min-h-[140px]">
                                     ${page.isCompleted ? `
                                         <div class="mic-btn opacity-40 mb-2"><i class="ph ph-check"></i></div>
                                         <p class="${page.hideScore ? 'text-indigo-500' : 'text-green-500'} font-bold status-large mb-2">${page.hideScore ? 'Bien essayé !' : 'Très bien !'}</p>
+                                        ${!page.hideScore && page.score !== undefined ? `<div class="bg-indigo-50 border border-indigo-100 rounded-xl px-4 py-2 flex items-center gap-2"><i class="ph ph-target text-indigo-500 text-xl"></i><span class="text-indigo-600 font-bold">Précision : ${page.score}%</span></div>` : ''}
                                     ` : `
-                                        <button id="mic-btn" class="mic-btn opacity-50 cursor-not-allowed" disabled onclick="toggleRecording('${page.target}')"><i class="ph ph-microphone"></i></button>
+                                        <button id="mic-btn" class="mic-btn" onclick="toggleRecording('${page.target}')"><i class="ph ph-microphone"></i></button>
                                         <p id="speech-status" class="text-slate-500 font-medium text-sm transition-all duration-300 mt-2 text-center px-4">Cliquez sur le micro pour parler</p>
-                                        <p id="speech-tries" class="text-[10px] text-slate-400 mt-1 uppercase tracking-widest">Essai: 0 / 2</p>
+                                        <p id="speech-tries" class="text-[10px] text-slate-400 mt-1 uppercase tracking-widest">Essai: ${speechTries} / 2</p>
                                     `}
                                 </div>
                             </div>
@@ -361,11 +375,38 @@
                 }
 
                 container.innerHTML = html;
+                requestAnimationFrame(() => adjustTextFit());
                 container.classList.add('active');
 
                 if (page.audio) playBackgroundAudio(page.audio, 500);
-                if (page.type === 'speech' && !page.isCompleted) setTimeout(() => playInteractionWithMicLock(page.targetAudio), 500);
+                
+                if (page.type === 'speech' && !page.isCompleted) {
+                    if (page.mode === 'repeat') {
+                        setTimeout(() => playInteractionWithMicLock(page.targetAudio), 500);
+                    } else {
+                        const btn = document.getElementById('mic-btn');
+                        if (btn) {
+                            btn.disabled = false;
+                            btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                        }
+                    }
+                } else if (page.type === 'speech' && page.isCompleted) {
+                    // 완료 시 자동 재생 (Speaking 모드 최종 실패 시에도 renderPage 호출 후 일로 들어옴)
+                    setTimeout(() => playInteractionAudio(page.targetAudio), 500);
+                }
             }, 50);
+        }
+
+        function adjustTextFit() {
+            const descTexts = document.querySelectorAll('.desc-text');
+            descTexts.forEach(descText => {
+                descText.style.fontSize = ''; descText.style.lineHeight = '';
+                let size = parseFloat(window.getComputedStyle(descText).fontSize);
+                let attempts = 40; const minSize = 13; 
+                while (descText.scrollHeight > descText.clientHeight + 2 && size > minSize && attempts > 0) {
+                    size -= 0.5; descText.style.fontSize = size + 'px'; descText.style.lineHeight = '1.35'; attempts--;
+                }
+            });
         }
 
         async function toggleRecording(target) {
@@ -376,87 +417,57 @@
                     mediaRecorder = new MediaRecorder(currentStream); audioChunks = [];
                     mediaRecorder.ondataavailable = (event) => audioChunks.push(event.data);
                     mediaRecorder.onstop = async () => {
+                        const blob = new Blob(audioChunks, { type: 'audio/wav' });
+                        const reader = new FileReader(); reader.readAsDataURL(blob);
+                        reader.onloadend = async () => { verifySpeech(reader.result.split(',')[1], target); };
                         stopMicrophone();
-                        const base64Audio = (await new Promise(r => { const f = new FileReader(); f.onload = () => r(f.result); f.readAsDataURL(new Blob(audioChunks, { type: 'audio/wav' })); })).split(',')[1];
-                        await verifySpeech(base64Audio, target);
                     };
                     mediaRecorder.start(); btn.classList.add('recording');
-                    if (recordingTimer) clearTimeout(recordingTimer);
-                    recordingTimer = setTimeout(() => { if (mediaRecorder && mediaRecorder.state === "recording") stopRecordingManually(); }, RECORDING_LIMIT);
+                    recordingTimer = setTimeout(() => { if (mediaRecorder.state === "recording") stopRecordingManually(); }, RECORDING_LIMIT);
                 } catch (err) {}
             }
         }
 
-        function stopRecordingManually() { 
-            if (mediaRecorder && mediaRecorder.state === "recording") mediaRecorder.stop(); 
-            stopMicrophone();
-            const btn = document.getElementById('mic-btn'); 
-            if (btn) btn.classList.remove('recording'); 
-            if (recordingTimer) clearTimeout(recordingTimer); 
-        }
-
-        function stopMicrophone() { 
-            if (currentStream) { currentStream.getTracks().forEach(track => track.stop()); currentStream = null; } 
-        }
+        function stopRecordingManually() { if (mediaRecorder && mediaRecorder.state === "recording") mediaRecorder.stop(); const btn = document.getElementById('mic-btn'); if (btn) btn.classList.remove('recording'); clearTimeout(recordingTimer); }
+        function stopMicrophone() { if (currentStream) { currentStream.getTracks().forEach(track => track.stop()); currentStream = null; } }
 
         async function verifySpeech(audioBase64, referenceText) {
             const status = document.getElementById('speech-status'); 
-            const triesDisplay = document.getElementById('speech-tries');
-            const page = pages[currentPage]; 
-            const maxTries = 2;
-            
-            speechTries++; 
-            if(triesDisplay) triesDisplay.innerText = `Essai: ${speechTries} / ${maxTries}`;
+            const page = pages[currentPage]; const maxTries = 2;
+            speechTries++;
             
             try {
                 const res = await fetch(CLOVA_API_FUNCTION_URL, { 
-                    method: 'POST', 
-                    headers: { 'Content-Type': 'application/json' }, 
-                    body: JSON.stringify({ 
-                        audioBase64: audioBase64, 
-                        languageCode: "Kor", 
-                        referenceText: referenceText 
-                    }) 
+                    method: 'POST', headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify({ audioBase64: audioBase64, languageCode: "Kor", referenceText: referenceText }) 
                 });
                 const result = await res.json();
                 let recognizedText = result.text || result.recognizedText || "";
                 let score = result.score || calculateSimilarity(referenceText, recognizedText);
                 page.score = score;
 
-                if (score >= 50) {
-                    // Success
-                    correctSound.triggerAttackRelease(['G5', 'C6'], '4n'); 
-                    page.isCompleted = true;
-                    document.getElementById('speech-ui-container').innerHTML = `
-                        <div class="mic-btn opacity-40 mb-2"><i class="ph ph-check"></i></div>
-                        <p class="text-green-500 font-bold status-large mb-2">Très bien !</p>
-                        <div class="bg-indigo-50 border border-indigo-100 rounded-xl px-4 py-2 flex items-center gap-2">
-                            <i class="ph ph-target text-indigo-500 text-xl"></i>
-                            <span class="text-indigo-600 font-bold">Précision : ${page.score}%</span>
-                        </div>`;
+                if (score >= (page.threshold || 50)) {
+                    correctSound.triggerAttackRelease(['G5', 'C6'], '4n'); page.isCompleted = true;
                     document.getElementById('next-btn').disabled = false;
+                    renderPage();
                 } else if (speechTries >= maxTries) {
-                    // Final Fail - Pass without score
-                    page.isCompleted = true; 
-                    page.hideScore = true; 
+                    // 2회 탈락 (최종 탈락)
+                    page.isCompleted = true; page.hideScore = true;
                     correctSound.triggerAttackRelease(['G5', 'C6'], '4n');
-                    document.getElementById('speech-ui-container').innerHTML = `
-                        <div class="mic-btn opacity-40 mb-2"><i class="ph ph-check"></i></div>
-                        <p class="text-indigo-500 font-bold status-large mb-2">Bien essayé !</p>`;
                     document.getElementById('next-btn').disabled = false;
+                    renderPage(); // 여기서 자동으로 Speaking 모드 텍스트 공개 및 오디오 재생 트리거됨
                 } else {
-                    // First Fail - Retry
-                    playInteractionWithMicLock(page.targetAudio);
-                    if (status) { 
-                        status.innerText = "Essayons encore une fois !"; 
-                        status.className = "text-orange-500 font-bold mt-2 text-center px-4"; 
+                    // 1회 탈락
+                    renderPage(); 
+                    if (status) { status.innerText = "Essayons encore 한 번 더 !"; status.className = "text-orange-500 font-bold mt-2 text-center px-4"; }
+                    
+                    // Repeat 모드일 때만 1회 실패 후 오디오 재생
+                    if (page.mode === 'repeat') {
+                        setTimeout(() => playInteractionWithMicLock(page.targetAudio), 300);
                     }
                 }
             } catch (error) { 
-                if (speechTries >= maxTries) { 
-                    page.isCompleted = true; 
-                    document.getElementById('next-btn').disabled = false; 
-                } 
+                if (speechTries >= maxTries) { page.isCompleted = true; document.getElementById('next-btn').disabled = false; renderPage(); } 
             }
         }
 
