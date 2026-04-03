@@ -216,7 +216,7 @@
                 type: 'info-card', 
                 cardText: '안녕히 계세요.', sub1: 'Restez bien', sub2: 'Au revoir', 
                 cardAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163897/S5-1_slow_eh2ta1.mp3', 
-                text: "En revanche, lorsque c'est vous qui partez, on dit « 안녕히 계세요 » au lieu de « 안녕히 가세요 ». Cette phrase signifie littéralement « restez bien» , « restez en paix », et s'adresse à la personne qui reste sur place.", 
+                text: "En revanche, lorsque c'est vous qui partez, on dit « 안녕히 계세요 » au lieu de « 안녕히 가세요 ». Cette phrase signifie littéralement « restez bien» , « restez en paix », et s'adresse à la person qui reste sur place.", 
                 audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163880/5-3_cbug0p.wav', 
                 isCompleted: true 
             },
@@ -227,7 +227,7 @@
                     {text: '안녕히 가세요.', sub1: 'Partez bien', sub2: 'Au revoir', audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163898/S5-1_fast_ygzkq9.mp3'}, 
                     {text: '안녕히 계세요.', sub1: 'Restez bien', sub2: 'Au revoir', audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163900/S5-2_fast_aqienh.mp3'}
                 ], 
-                text: "Comme le français ne fait pas la distinction entre la person who part et celle qui reste pour dire au revoir, il faut beaucoup de pratique pour utiliser naturellement ces deux phrases dans la vie quotidienne. Écoutez et répétez-les plusieurs fois.", 
+                text: "Comme le français ne fait pas la distinction entre la personne qui part et celle qui reste pour dire au revoir, il faut beaucoup de pratique pour utiliser naturellement ces deux phrases dans la vie quotidienne. Écoutez et répétez-les several fois.", 
                 audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163878/5-4_spnkp8.wav', 
                 isCompleted: true 
             },
@@ -239,21 +239,23 @@
             { type: 'input-quiz', question: "Remplissez le blanc.", quizAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163900/S5-2_fast_aqienh.mp3', prefix: "", suffix: ".", answer: "안녕히 계세요", isCompleted: false },
             { 
                 type: 'free-speech', 
-                question: "Essayez de le dire vous-même.", 
-                targetText: "Merci, au revoir. (à quelqu’un qui s’en va)", 
-                targets: ["감사합니다 안녕히 가세요", "고마워요 안녕히 가세요", "감사합니다 안녕히가세요", "고마워요 안녕히가세요"], 
+                question: "직접 말해 보세요.", 
+                targetText: "Merci, au revoir.", 
+                targetSubtitle: "(à quelqu’un qui s’en va)",
+                targets: ["감사합니다, 안녕히 가세요.", "고마워요, 안녕히 가세요.", "감사합니다 안녕히 가세요", "고마워요 안녕히 가세요"], 
                 koreanHint: "감사합니다, 안녕히 가세요. / 고마워요, 안녕히 가세요.", 
                 isCompleted: false 
             },
             { 
                 type: 'free-speech', 
-                question: "Essayez de le dire vous-même.", 
-                targetText: "Je suis désolé, au revoir.(à quelqu’un qui y reste)", 
-                targets: ["죄송합니다 안녕히 계세요", "미안해요 안녕히 계세요", "죄송합니다 안녕히계세요", "미안해요 안녕히계세요"], 
+                question: "직접 말해 보세요.", 
+                targetText: "Je suis désolé, au revoir.", 
+                targetSubtitle: "(à quelqu’un qui y reste)",
+                targets: ["죄송합니다, 안녕히 계세요.", "미안해요, 안녕히 계세요.", "죄송합니다 안녕히 계세요", "미안해요 안녕히 계세요"], 
                 koreanHint: "죄송합니다, 안녕히 계세요. / 미안해요, 안녕히 계세요.", 
                 isCompleted: false 
             },
-            { type: 'outro', text: "Excellent ! Vous avez maintenant terminé le programme « 8 phrases essentielles » et vous êtes capable de dire huit phrases en coréen. Bien sûr, savoir saluer ne suffit pas pour communiquer couramment en Corée, mais ça vous permettra de voyager et de rencontrer des Coréens avec beaucoup plus de confiance.", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163880/5-5_nprhec.wav', isCompleted: true },
+            { type: 'outro', text: "Excellent ! Vous avez maintenant terminé le programme « 8 phrases essentielles » et vous êtes capable de dire huit phrases en coréen. Bien sûr, savoir saluer ne suffit pas pour communiquer couramment en Corée, mais ça vous permettra de voyager et de rencontrer des Coréens with beaucoup plus de confiance.", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163880/5-5_nprhec.wav', isCompleted: true },
             { type: 'outro', text: "Maintenant, choisissez le thème qui vous intéresse parmi les programmes de niveau A1 et continuez votre apprentissage du coréen ! Si vous ne vous sentez pas encore tout à fait à l'aise with les huit phrases appris, n'hésitez pas à consulter la leçon supplémentaire pour vous entraîner davantage à l'oral.<br><br>Alors, on se retrouve très bientôt dans un autre programme. 안녕히 가세요!", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163725/5-6_qjwy1t.mp3', isCompleted: true }
         ];
 
@@ -462,9 +464,10 @@
                         const showText = page.isCompleted || speechTries >= 2;
                         html = `
                             <div class="flex flex-col items-center w-full">
-                                <h2 class="subtitle-main text-slate-900 mb-4">Essayez de le dire vous-même.</h2>
+                                <h2 class="subtitle-main text-slate-900 mb-4">${page.question}</h2>
                                 <div class="char-card shrink-0 mb-4 px-10 py-10 flex flex-col items-center">
-                                    <div class="font-bold tracking-tight text-center leading-tight text-slate-800" style="font-size: clamp(2rem, 6vh, 4rem);">${page.targetText}</div>
+                                    <div class="font-bold tracking-tight text-center leading-tight text-slate-800" style="font-size: clamp(1.8rem, 5vh, 3.5rem);">${page.targetText}</div>
+                                    ${page.targetSubtitle ? `<div class="text-sm font-normal text-slate-500 mt-2">${page.targetSubtitle}</div>` : ''}
                                     <div id="free-speech-text" class="mt-4 text-indigo-600 font-bold text-xl sm:text-2xl transition-opacity duration-300 ${showText ? 'block' : 'hidden'}">${page.koreanHint}</div>
                                 </div>
                                 <div id="speech-ui-container" class="flex flex-col items-center shrink-0 min-h-[140px]">
@@ -484,7 +487,7 @@
                     case 'outro':
                         html = `<div class="flex flex-col items-center w-full"><div class="text-5xl shrink-0 text-indigo-500 mb-4"><i class="ph ph-sparkle"></i></div><p class="desc-text font-medium text-center">${page.text}</p></div>`;
                         
-                        // Outro 섹션에 진입했을 때 (첫 번째 Outro 페이지 포함) 1회만 완료 메시지 전송
+                        // Outro 섹션에 진입했을 때 1회만 완료 메시지 전송
                         if (!window.lessonCompletedSent) {
                             window.parent.postMessage({ type: 'lesson_complete' }, '*');
                             window.lessonCompletedSent = true;
