@@ -284,7 +284,9 @@
 
         window.playInteractionWithMicLock = function(url) {
             const micBtn = document.getElementById('mic-btn');
+            // 녹음 중이면 오디오 재생 방지 (울림 방지)
             if (micBtn && micBtn.classList.contains('recording')) return;
+            
             if (micBtn) { micBtn.disabled = true; micBtn.classList.add('opacity-50', 'cursor-not-allowed'); }
             playInteractionAudio(url, () => {
                 const btn = document.getElementById('mic-btn');
@@ -529,6 +531,8 @@
                     mediaRecorder = new MediaRecorder(currentStream); audioChunks = [];
                     mediaRecorder.ondataavailable = (event) => audioChunks.push(event.data);
                     mediaRecorder.onstop = async () => {
+                        // 녹음 중지 시 즉시 스트림 해제
+                        stopMicrophone();
                         const base64Audio = (await new Promise(r => { const f = new FileReader(); f.onload = () => r(f.result); f.readAsDataURL(new Blob(audioChunks, { type: 'audio/wav' })); })).split(',')[1];
                         await verifySpeech(base64Audio, target);
                     };
@@ -539,8 +543,22 @@
             }
         }
 
-        function stopRecordingManually() { if (mediaRecorder && mediaRecorder.state === "recording") mediaRecorder.stop(); const btn = document.getElementById('mic-btn'); if (btn) btn.classList.remove('recording'); if (recordingTimer) clearTimeout(recordingTimer); }
-        function stopMicrophone() { if (currentStream) { currentStream.getTracks().forEach(track => track.stop()); currentStream = null; } }
+        function stopRecordingManually() { 
+            if (mediaRecorder && mediaRecorder.state === "recording") {
+                mediaRecorder.stop(); 
+            } 
+            stopMicrophone(); // 즉시 하드웨어 점유 해제
+            const btn = document.getElementById('mic-btn'); 
+            if (btn) btn.classList.remove('recording'); 
+            if (recordingTimer) clearTimeout(recordingTimer); 
+        }
+        
+        function stopMicrophone() { 
+            if (currentStream) { 
+                currentStream.getTracks().forEach(track => track.stop()); 
+                currentStream = null; 
+            } 
+        }
 
         async function verifySpeech(audioBase64, referenceText) {
             const status = document.getElementById('speech-status'); const triesDisplay = document.getElementById('speech-tries');
