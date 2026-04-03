@@ -227,7 +227,7 @@
                     {text: '안녕히 가세요.', sub1: 'Partez bien', sub2: 'Au revoir', audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163898/S5-1_fast_ygzkq9.mp3'}, 
                     {text: '안녕히 계세요.', sub1: 'Restez bien', sub2: 'Au revoir', audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163900/S5-2_fast_aqienh.mp3'}
                 ], 
-                text: "Comme le français ne fait pas la distinction entre la personne qui part et celle qui reste pour dire au revoir, il faut beaucoup de pratique pour utiliser naturellement ces deux phrases dans la vie quotidienne. Écoutez et répétez-les plusieurs fois.", 
+                text: "Comme le français ne fait pas la distinction entre la person who part et celle qui reste pour dire au revoir, il faut beaucoup de pratique pour utiliser naturellement ces deux phrases dans la vie quotidienne. Écoutez et répétez-les plusieurs fois.", 
                 audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163878/5-4_spnkp8.wav', 
                 isCompleted: true 
             },
@@ -349,7 +349,6 @@
                 // 마지막 페이지에서만 하단바 숨김
                 if (currentPage === pages.length - 1) { 
                     navBar.style.display = 'none'; 
-                    window.parent.postMessage({ type: 'lesson_complete' }, '*');
                 } else {
                     navBar.style.display = 'flex';
                     nextBtn.disabled = !page.isCompleted;
@@ -484,9 +483,16 @@
 
                     case 'outro':
                         html = `<div class="flex flex-col items-center w-full"><div class="text-5xl shrink-0 text-indigo-500 mb-4"><i class="ph ph-sparkle"></i></div><p class="desc-text font-medium text-center">${page.text}</p></div>`;
-                        if (currentPage === pages.length - 2) { // 첫 번째 Outro
+                        
+                        // Outro 섹션에 진입했을 때 (첫 번째 Outro 페이지 포함) 1회만 완료 메시지 전송
+                        if (!window.lessonCompletedSent) {
+                            window.parent.postMessage({ type: 'lesson_complete' }, '*');
+                            window.lessonCompletedSent = true;
+                        }
+
+                        if (currentPage === pages.length - 2) { 
                             playBackgroundAudio(page.audio, 500);
-                        } else if (currentPage === pages.length - 1) { // 마지막 Outro
+                        } else if (currentPage === pages.length - 1) { 
                             completionSound.triggerAttackRelease(["E5", "G5", "C6", "E6"], "2n");
                         }
                         break;
