@@ -237,8 +237,22 @@
             { type: 'single-quiz', question: "Que dites-vous à quelqu'un qui s'en va ?", options: ['안녕히 가세요.', '안녕히 계세요.'], answer: '안녕히 가세요.', isCompleted: false },
             { type: 'input-quiz', question: "Remplissez le blanc.", quizAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163898/S5-1_fast_ygzkq9.mp3', prefix: "안녕히", suffix: ".", answer: "가세요", isCompleted: false },
             { type: 'input-quiz', question: "Remplissez le blanc.", quizAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163900/S5-2_fast_aqienh.mp3', prefix: "", suffix: ".", answer: "안녕히 계세요", isCompleted: false },
-            { type: 'free-speech', question: "Essayez de le dire vous-même.", targetText: "Merci, au revoir.<br><span class='text-sm font-normal text-slate-500'>(à quelqu’un qui s’en va)</span>", targets: ["감사합니다 안녕히 가세요", "고마워요 안녕히 가세요", "감사합니다 안녕히가세요", "고마워요 안녕히가세요"], koreanHint: "감사합니다 / 고마워요<br>안녕히 가세요.", isCompleted: false },
-            { type: 'free-speech', question: "Essayez de le dire vous-même.", targetText: "Je suis désolé, au revoir.<br><span class='text-sm font-normal text-slate-500'>(à quelqu’un qui y reste)</span>", targets: ["죄송합니다 안녕히 계세요", "미안해요 안녕히 계세요", "죄송합니다 안녕히계세요", "미안해요 안녕히계세요"], koreanHint: "죄송합니다 / 미안해요<br>안녕히 계세요.", isCompleted: false },
+            { 
+                type: 'free-speech', 
+                question: "Essayez de le dire vous-même.", 
+                targetText: "Merci, au revoir. (à quelqu’un qui s’en va)", 
+                targets: ["감사합니다 안녕히 가세요", "고마워요 안녕히 가세요", "감사합니다 안녕히가세요", "고마워요 안녕히가세요"], 
+                koreanHint: "감사합니다, 안녕히 가세요. / 고마워요, 안녕히 가세요.", 
+                isCompleted: false 
+            },
+            { 
+                type: 'free-speech', 
+                question: "Essayez de le dire vous-même.", 
+                targetText: "Je suis désolé, au revoir.(à quelqu’un qui y reste)", 
+                targets: ["죄송합니다 안녕히 계세요", "미안해요 안녕히 계세요", "죄송합니다 안녕히계세요", "미안해요 안녕히계세요"], 
+                koreanHint: "죄송합니다, 안녕히 계세요. / 미안해요, 안녕히 계세요.", 
+                isCompleted: false 
+            },
             { type: 'outro', text: "Excellent ! Vous avez maintenant terminé le programme « 8 phrases essentielles » et vous êtes capable de dire huit phrases en coréen. Bien sûr, savoir saluer ne suffit pas pour communiquer couramment en Corée, mais ça vous permettra de voyager et de rencontrer des Coréens avec beaucoup plus de confiance.", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163880/5-5_nprhec.wav', isCompleted: true },
             { type: 'outro', text: "Maintenant, choisissez le thème qui vous intéresse parmi les programmes de niveau A1 et continuez votre apprentissage du coréen ! Si vous ne vous sentez pas encore tout à fait à l'aise with les huit phrases appris, n'hésitez pas à consulter la leçon supplémentaire pour vous entraîner davantage à l'oral.<br><br>Alors, on se retrouve très bientôt dans un autre programme. 안녕히 가세요!", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163725/5-6_qjwy1t.mp3', isCompleted: true }
         ];
@@ -332,8 +346,11 @@
                 container.innerHTML = '';
                 let html = '';
 
-                if (page.type === 'outro') { navBar.style.display = 'none'; } 
-                else {
+                // 마지막 페이지에서만 하단바 숨김
+                if (currentPage === pages.length - 1) { 
+                    navBar.style.display = 'none'; 
+                    window.parent.postMessage({ type: 'lesson_complete' }, '*');
+                } else {
                     navBar.style.display = 'flex';
                     nextBtn.disabled = !page.isCompleted;
                     prevBtn.disabled = (currentPage === 0);
@@ -467,7 +484,11 @@
 
                     case 'outro':
                         html = `<div class="flex flex-col items-center w-full"><div class="text-5xl shrink-0 text-indigo-500 mb-4"><i class="ph ph-sparkle"></i></div><p class="desc-text font-medium text-center">${page.text}</p></div>`;
-                        completionSound.triggerAttackRelease(["E5", "G5", "C6", "E6"], "2n");
+                        if (currentPage === pages.length - 2) { // 첫 번째 Outro
+                            playBackgroundAudio(page.audio, 500);
+                        } else if (currentPage === pages.length - 1) { // 마지막 Outro
+                            completionSound.triggerAttackRelease(["E5", "G5", "C6", "E6"], "2n");
+                        }
                         break;
                 }
 
@@ -475,7 +496,7 @@
                 requestAnimationFrame(() => adjustTextFit());
                 container.classList.add('active');
 
-                if (page.audio) playBackgroundAudio(page.audio, 500);
+                if (page.audio && page.type !== 'outro') playBackgroundAudio(page.audio, 500);
                 if (page.type === 'speech' && !page.isCompleted) setTimeout(() => playInteractionWithMicLock(page.targetAudio), 500);
             }, 50);
         }
@@ -549,7 +570,7 @@
                     };
                     mediaRecorder.start(); btn.classList.add('recording');
                     recordingTimer = setTimeout(() => { if (mediaRecorder.state === "recording") stopRecordingManually(); }, RECORDING_LIMIT);
-                } catch (err) { document.getElementById('speech-status').innerText = "Erreur micro."; }
+                } catch (err) {}
             }
         }
 
@@ -566,13 +587,7 @@
                 });
                 const result = await response.json();
                 const recognized = (result.text || "").replace(/[?.,!\s]/g, '');
-                let score = result.score || 0;
-                
-                if (page.type === 'free-speech') {
-                    score = Math.max(...page.targets.map(t => calculateSimilarity(t, recognized)));
-                } else if (score === 0) {
-                    score = calculateSimilarity(referenceText, recognized);
-                }
+                let score = result.score || calculateSimilarity(referenceText || page.targets[0], recognized);
                 
                 page.score = score;
                 const threshold = page.type === 'free-speech' ? 90 : 50;
@@ -580,7 +595,9 @@
                 if (score >= threshold) { finishSpeech(score); } 
                 else if (speechTries >= maxTries) { finishSpeechFail(); } 
                 else {
-                    if (page.type === 'free-speech' && speechTries === 2) document.getElementById('free-speech-text').classList.replace('hidden', 'block');
+                    if (page.type === 'free-speech' && speechTries === 2) {
+                        document.getElementById('free-speech-text').classList.replace('hidden', 'block');
+                    }
                     else if (page.type === 'speech') playInteractionWithMicLock(page.targetAudio);
                     document.getElementById('speech-status').innerText = "Essayons encore !";
                 }
