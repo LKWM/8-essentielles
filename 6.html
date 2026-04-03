@@ -196,28 +196,28 @@
     <script>
         const pages = [
             { type: 'cover', subtitle: '8 phrases essentielles', title: 'Leçon supplémentaire - 100% Oral', btnText: 'Commencer', isCompleted: true },
-            { type: 'info-only', cardText: '지금까지 배운 표현들을 다시 한번 따라 해 보세요.', sub2: 'Répétez une fois de plus les expressions que vous avez appris.', isCompleted: true },
+            { type: 'info-only', cardText: '지금까지 배운 표현들을 다시 한번 따라 해 보세요.', sub2: 'Répétez une fois de plus les expressions que vous avez apprises.', isCompleted: true },
             
-            // Part 1: Repeat (2-9) - Threshold 50%
+            // Part 1: Repeat (2-9)
             { type: 'speech', mode: 'repeat', text: 'Répétez après moi.', display: '안녕하세요?', sub1: 'être en paix ?', sub2: 'Bonjour', target: '안녕하세요', threshold: 50, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194335/S6-1_nosfbm.mp3', isCompleted: false },
             { type: 'speech', mode: 'repeat', text: 'Répétez après moi.', display: '안녕하십니까?', sub1: 'être en paix ?', sub2: 'Bonjour', target: '안녕하십니까', threshold: 50, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194335/S6-2_bp3og9.mp3', isCompleted: false },
-            { type: 'speech', mode: 'repeat', text: 'Répétez après moi.', display: '감사합니다.', sub2: 'Merci', target: '감사합니다', threshold: 50, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194340/S6-3_qxlhmh.mp3', isCompleted: false },
-            { type: 'speech', mode: 'repeat', text: 'Répétez après moi.', display: '고마워요.', sub2: 'Merci', target: '고마워요', threshold: 50, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194341/S6-4_fqapuj.mp3', isCompleted: false },
-            { type: 'speech', mode: 'repeat', text: 'Répétez après moi.', display: '죄송합니다.', sub2: 'Je suis désolé.', target: '죄송합니다', threshold: 50, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194343/S6-5_yhxcgd.mp3', isCompleted: false },
-            { type: 'speech', mode: 'repeat', text: 'Répétez après moi.', display: '미안해요.', sub2: 'Je suis désolé.', target: '미안해요', threshold: 50, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194345/S6-6_zlk2bg.mp3', isCompleted: false },
-            { type: 'speech', mode: 'repeat', text: 'Répétez après moi.', display: '안녕히 가세요.', sub1: 'Partez bien.', sub2: 'Au revoir.', target: '안녕히 가세요', threshold: 50, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194347/S6-7_tcwrhf.mp3', isCompleted: false },
-            { type: 'speech', mode: 'repeat', text: 'Répétez après moi.', display: '안녕히 계세요.', sub1: 'Restez bien.', sub2: 'Au revoir.', target: '안녕히 계세요', threshold: 50, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194349/S6-8_krqqgv.mp3', isCompleted: false },
+            { type: 'speech', mode: 'repeat', text: 'Répétez after moi.', display: '감사합니다.', sub2: 'Merci', target: '감사합니다', threshold: 50, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194340/S6-3_qxlhmh.mp3', isCompleted: false },
+            { type: 'speech', mode: 'repeat', text: 'Répétez after moi.', display: '고마워요.', sub2: 'Merci', target: '고마워요', threshold: 50, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194341/S6-4_fqapuj.mp3', isCompleted: false },
+            { type: 'speech', mode: 'repeat', text: 'Répétez after moi.', display: '죄송합니다.', sub2: 'Je suis désolé.', target: '죄송합니다', threshold: 50, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194343/S6-5_yhxcgd.mp3', isCompleted: false },
+            { type: 'speech', mode: 'repeat', text: 'Répétez after moi.', display: '미안해요.', sub2: 'Je suis désolé.', target: '미안해요', threshold: 50, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194345/S6-6_zlk2bg.mp3', isCompleted: false },
+            { type: 'speech', mode: 'repeat', text: 'Répétez after moi.', display: '안녕히 가세요.', sub1: 'Partez bien.', sub2: 'Au revoir.', target: '안녕히 가세요', threshold: 50, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194347/S6-7_tcwrhf.mp3', isCompleted: false },
+            { type: 'speech', mode: 'repeat', text: 'Répétez after moi.', display: '안녕히 계세요.', sub1: 'Restez bien.', sub2: 'Au revoir.', target: '안녕히 계세요', threshold: 50, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194349/S6-8_krqqgv.mp3', isCompleted: false },
             
-            // Part 2: Speaking (11-18) - Threshold 80%
+            // Part 2: Speaking (11-18)
             { type: 'info-only', cardText: '한국어로 말해 보세요.', sub2: 'Parlez en coréen.', isCompleted: true },
-            { type: 'speech', mode: 'speaking', text: '한국어로 말해 보세요.', display: '__하세요?', sub1: 'être en paix ?', sub2: 'Bonjour', target: '안녕하세요', threshold: 80, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194335/S6-1_nosfbm.mp3', isCompleted: false },
-            { type: 'speech', mode: 'speaking', text: '한국어로 말해 보세요.', display: '안녕____?', sub1: 'être en paix ?', sub2: 'Bonjour', target: '안녕하십니까', threshold: 80, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194335/S6-2_bp3og9.mp3', isCompleted: false },
-            { type: 'speech', mode: 'speaking', text: '한국어로 말해 보세요.', display: '__합니다.', sub2: 'Merci', target: '감사합니다', threshold: 80, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194340/S6-3_qxlhmh.mp3', isCompleted: false },
-            { type: 'speech', mode: 'speaking', text: '한국어로 말해 보세요.', display: '고마__.', sub2: 'Merci', target: '고마워요', threshold: 80, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194341/S6-4_fqapuj.mp3', isCompleted: false },
-            { type: 'speech', mode: 'speaking', text: '한국어로 말해 보세요.', display: '__합니다.', sub2: 'Je suis désolé.', target: '죄송합니다', threshold: 80, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194343/S6-5_yhxcgd.mp3', isCompleted: false },
-            { type: 'speech', mode: 'speaking', text: '한국어로 말해 보세요.', display: '__해요.', sub2: 'Je suis désolé.', target: '미안해요', threshold: 80, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194345/S6-6_zlk2bg.mp3', isCompleted: false },
-            { type: 'speech', mode: 'speaking', text: '한국어로 말해 보세요.', display: '안녕히 ___.', sub1: 'Partez bien.', sub2: 'Au revoir.', target: '안녕히 가세요', threshold: 80, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194347/S6-7_tcwrhf.mp3', isCompleted: false },
-            { type: 'speech', mode: 'speaking', text: '한국어로 말해 보세요.', display: '___ _세요.', sub1: 'Restez bien.', sub2: 'Au revoir.', target: '안녕히 계세요', threshold: 80, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194349/S6-8_krqqgv.mp3', isCompleted: false },
+            { type: 'speech', mode: 'speaking', text: 'Parlez en coréen.', display: '__하세요?', sub1: 'être en paix ?', sub2: 'Bonjour', target: '안녕하세요', threshold: 80, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194335/S6-1_nosfbm.mp3', isCompleted: false },
+            { type: 'speech', mode: 'speaking', text: 'Parlez en coréen.', display: '안녕____?', sub1: 'être en paix ?', sub2: 'Bonjour', target: '안녕하십니까', threshold: 80, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194335/S6-2_bp3og9.mp3', isCompleted: false },
+            { type: 'speech', mode: 'speaking', text: 'Parlez en coréen.', display: '__합니다.', sub2: 'Merci', target: '감사합니다', threshold: 80, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194340/S6-3_qxlhmh.mp3', isCompleted: false },
+            { type: 'speech', mode: 'speaking', text: 'Parlez en coréen.', display: '고마__.', sub2: 'Merci', target: '고마워요', threshold: 80, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194341/S6-4_fqapuj.mp3', isCompleted: false },
+            { type: 'speech', mode: 'speaking', text: 'Parlez en coréen.', display: '__합니다.', sub2: 'Je suis désolé.', target: '죄송합니다', threshold: 80, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194343/S6-5_yhxcgd.mp3', isCompleted: false },
+            { type: 'speech', mode: 'speaking', text: 'Parlez en coréen.', display: '__해요.', sub2: 'Je suis désolé.', target: '미안해요', threshold: 80, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194345/S6-6_zlk2bg.mp3', isCompleted: false },
+            { type: 'speech', mode: 'speaking', text: 'Parlez en coréen.', display: '안녕히 ___.', sub1: 'Partez bien.', sub2: 'Au revoir.', target: '안녕히 가세요', threshold: 80, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194347/S6-7_tcwrhf.mp3', isCompleted: false },
+            { type: 'speech', mode: 'speaking', text: 'Parlez en coréen.', display: '___ _세요.', sub1: 'Restez bien.', sub2: 'Au revoir.', target: '안녕히 계세요', threshold: 80, targetAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194349/S6-8_krqqgv.mp3', isCompleted: false },
             
             { type: 'outro', text: "Bravo ! Vous n'avez vraiment plus de soucis à vous faire pour votre voyage en Corée désormais, n'est-ce pas ? Continuez à étudier le coréen dans nos prochains programmes pour apprendre encore plus d'expressions et de mots. Si jamais vous confondez les salutations, vous pouvez revenir ici quand vous le souhaitez. Alors, à très bientôt !", audio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775194337/6-outro_ukwzgm.wav', isCompleted: true }
         ];
@@ -337,11 +337,7 @@
                         break;
 
                     case 'speech':
-                        // showAudio logic: 
-                        // repeat 모드 -> 항상 보임
-                        // speaking 모드 -> 완료되었거나 2회 이상 탈락 시 보임
                         const showAudio = (page.mode === 'repeat') || (page.isCompleted) || (speechTries >= 2);
-                        // Speaking 모드에서 탈락 시 텍스트 공개
                         const displayText = (page.mode === 'speaking' && page.isCompleted && page.hideScore) ? page.target : page.display;
                         
                         html = `
@@ -392,8 +388,6 @@
                         }
                     }
                 } else if (page.type === 'speech' && page.isCompleted) {
-                    // 성공적으로 통과한 경우에는 오디오를 재생하지 않음
-                    // 2회 탈락(Speaking 모드 최종 실패) 시에만 정답 확인용으로 재생
                     if (page.hideScore) {
                         setTimeout(() => playInteractionAudio(page.targetAudio), 500);
                     }
@@ -455,17 +449,13 @@
                     document.getElementById('next-btn').disabled = false;
                     renderPage();
                 } else if (speechTries >= maxTries) {
-                    // 최종 탈락
                     page.isCompleted = true; page.hideScore = true;
                     correctSound.triggerAttackRelease(['G5', 'C6'], '4n');
                     document.getElementById('next-btn').disabled = false;
                     renderPage(); 
                 } else {
-                    // 1차 실패
                     renderPage(); 
-                    if (status) { status.innerText = "Essayons encore 한 번 더 !"; status.className = "text-orange-500 font-bold mt-2 text-center px-4"; }
-                    
-                    // Repeat 모드일 때만 1회 실패 후 오디오 힌트 제공
+                    if (status) { status.innerText = "Essayons encore une fois !"; status.className = "text-orange-500 font-bold mt-2 text-center px-4"; }
                     if (page.mode === 'repeat') {
                         setTimeout(() => playInteractionWithMicLock(page.targetAudio), 300);
                     }
