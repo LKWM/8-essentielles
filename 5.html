@@ -239,7 +239,7 @@
             { type: 'input-quiz', question: "Remplissez le blanc.", quizAudio: 'https://res.cloudinary.com/de76i94ia/video/upload/v1775163900/S5-2_fast_aqienh.mp3', prefix: "", suffix: ".", answer: "안녕히 계세요", isCompleted: false },
             { 
                 type: 'free-speech', 
-                question: "직접 말해 보세요.", 
+                question: "Parlez en coréen.", 
                 targetText: "Merci, au revoir.", 
                 targetSubtitle: "(à quelqu’un qui s’en va)",
                 targets: ["감사합니다, 안녕히 가세요.", "고마워요, 안녕히 가세요.", "감사합니다 안녕히 가세요", "고마워요 안녕히 가세요"], 
@@ -248,7 +248,7 @@
             },
             { 
                 type: 'free-speech', 
-                question: "직접 말해 보세요.", 
+                question: "Parlez en coréen.", 
                 targetText: "Je suis désolé, au revoir.", 
                 targetSubtitle: "(à quelqu’un qui y reste)",
                 targets: ["죄송합니다, 안녕히 계세요.", "미안해요, 안녕히 계세요.", "죄송합니다 안녕히 계세요", "미안해요 안녕히 계세요"], 
@@ -487,16 +487,13 @@
                     case 'outro':
                         html = `<div class="flex flex-col items-center w-full"><div class="text-5xl shrink-0 text-indigo-500 mb-4"><i class="ph ph-sparkle"></i></div><p class="desc-text font-medium text-center">${page.text}</p></div>`;
                         
-                        // Outro 섹션에 진입했을 때 1회만 완료 메시지 전송
-                        if (!window.lessonCompletedSent) {
-                            window.parent.postMessage({ type: 'lesson_complete' }, '*');
-                            window.lessonCompletedSent = true;
-                        }
-
-                        if (currentPage === pages.length - 2) { 
-                            playBackgroundAudio(page.audio, 500);
-                        } else if (currentPage === pages.length - 1) { 
-                            completionSound.triggerAttackRelease(["E5", "G5", "C6", "E6"], "2n");
+                        // 정확히 16번 인덱스 (첫 번째 Outro 페이지)에서만 팡파레와 완료 메시지를 전송
+                        if (currentPage === 16) {
+                            if (!window.lessonCompletedSent) {
+                                window.parent.postMessage({ type: 'lesson_complete' }, '*');
+                                window.lessonCompletedSent = true;
+                                completionSound.triggerAttackRelease(["E5", "G5", "C6", "E6"], "2n");
+                            }
                         }
                         break;
                 }
@@ -505,7 +502,13 @@
                 requestAnimationFrame(() => adjustTextFit());
                 container.classList.add('active');
 
-                if (page.audio && page.type !== 'outro') playBackgroundAudio(page.audio, 500);
+                // 오디오 재생 로직
+                if (page.audio) {
+                    // 16번 인덱스의 경우 팡파레(completionSound)와 겹치지 않도록 딜레이 조정
+                    const delay = (page.type === 'outro' && currentPage === 16) ? 1500 : 500;
+                    playBackgroundAudio(page.audio, delay);
+                }
+                
                 if (page.type === 'speech' && !page.isCompleted) setTimeout(() => playInteractionWithMicLock(page.targetAudio), 500);
             }, 50);
         }
