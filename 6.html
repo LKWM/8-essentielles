@@ -338,7 +338,7 @@
 
                     case 'speech':
                         const showAudio = (page.mode === 'repeat') || (page.isCompleted) || (speechTries >= 2);
-                        const displayText = (page.mode === 'speaking' && page.isCompleted && page.hideScore) ? page.target : page.display;
+                        const displayText = (page.mode === 'speaking' && page.isCompleted) ? page.target : page.display;
                         
                         html = `
                             <div class="flex flex-col items-center w-full">
