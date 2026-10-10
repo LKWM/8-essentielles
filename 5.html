@@ -270,7 +270,17 @@
         let speechTries = 0;
         let recordingTimer = null;
         const RECORDING_LIMIT = 6000; 
-        const CLOVA_API_FUNCTION_URL = 'https://coreeno.base44.app/api/functions/naverClovaSpeech';
+        const GEMINI_API_FUNCTION_URL = 'https://coreeno.base44.app/functions/GeminiChatSecure';
+        let lessonPermit = null;
+        let lessonPermitId = null;
+        let recordedMime = 'audio/webm';
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'coreeno:permit') {
+                lessonPermit = event.data.permit;
+                lessonPermitId = event.data.lesson_id;
+            }
+        });
+
 
         window.onload = () => {
             Tone.Destination.volume.value = -8;
@@ -572,6 +582,7 @@
                     mediaRecorder = new MediaRecorder(currentStream); audioChunks = [];
                     mediaRecorder.ondataavailable = (event) => audioChunks.push(event.data);
                     mediaRecorder.onstop = async () => {
+                        recordedMime = mediaRecorder.mimeType || 'audio/webm';
                         const blob = new Blob(audioChunks, { type: 'audio/wav' });
                         const reader = new FileReader(); reader.readAsDataURL(blob);
                         reader.onloadend = async () => { 
@@ -593,13 +604,20 @@
             const page = pages[currentPage]; const maxTries = page.type === 'free-speech' ? 3 : 2;
             speechTries++; if(document.getElementById('speech-tries')) document.getElementById('speech-tries').innerText = `Essai: ${speechTries} / ${maxTries}`;
             try {
-                const response = await fetch(CLOVA_API_FUNCTION_URL, {
+                if (!lessonPermit) { throw new Error("Permis d'accès indisponible. Veuillez actualiser la page et réessayer."); }
+                const response = await fetch(GEMINI_API_FUNCTION_URL, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ audioBase64: audioBase64, languageCode: "Kor", referenceText: referenceText || (page.targets ? page.targets[0] : "") })
+                    body: JSON.stringify({ model: "gemini-3.5-transcribe", audioBase64: audioBase64, mimeType: recordedMime, permit: lessonPermit, lesson_id: lessonPermitId })
                 });
+                if (!response.ok) {
+                    if (response.status === 401 || response.status === 403) throw new Error("Permis d'accès expiré. Veuillez actualiser la page et réessayer.");
+                    if (response.status === 429) throw new Error("Limite d'utilisation atteinte. Veuillez réessayer dans quelques instants. Si l'erreur persiste, signalez un bug.");
+                    if (response.status >= 500) throw new Error("Erreur du serveur. Veuillez réessayer dans quelques instants. Si l'erreur persiste, signalez un bug.");
+                    throw new Error("Erreur de connexion. Veuillez réessayer.");
+                }
                 const result = await response.json();
-                const recognized = (result.text || "").replace(/[?.,!\s]/g, '');
-                let score = result.score || calculateSimilarity(referenceText || page.targets[0], recognized);
+                const recognized = ((result.data && result.data.text) || "").replace(/[?.,!\s]/g, '');
+                let score = calculateSimilarity(referenceText || page.targets[0], recognized);
                 
                 page.score = score;
                 const threshold = page.type === 'free-speech' ? 90 : 50;
@@ -613,7 +631,11 @@
                     else if (page.type === 'speech') playInteractionWithMicLock(page.targetAudio);
                     document.getElementById('speech-status').innerText = "Essayons encore !";
                 }
-            } catch (error) { if (speechTries >= maxTries) finishSpeechFail(); }
+            } catch (error) {
+                const st = document.getElementById('speech-status');
+                if (st) { st.innerText = (error && error.message) ? error.message : "Erreur de connexion. Veuillez réessayer."; st.className = "text-red-500 font-bold mt-2 text-center px-4"; }
+                if (speechTries >= maxTries) finishSpeechFail();
+            }
         }
 
         function finishSpeech(score) {

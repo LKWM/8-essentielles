@@ -243,7 +243,17 @@
         const RECORDING_LIMIT = 6000; 
 
         const BASE_44_ORIGIN = "https://coreeno.base44.app";
-        const CLOVA_API_FUNCTION_URL = BASE_44_ORIGIN + '/api/functions/naverClovaSpeech';
+        const GEMINI_API_FUNCTION_URL = BASE_44_ORIGIN + '/functions/GeminiChatSecure';
+        let lessonPermit = null;
+        let lessonPermitId = null;
+        let recordedMime = 'audio/webm';
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'coreeno:permit') {
+                lessonPermit = event.data.permit;
+                lessonPermitId = event.data.lesson_id;
+            }
+        });
+
 
         window.onload = () => {
             Tone.Destination.volume.value = -8;
@@ -533,6 +543,7 @@
                     mediaRecorder.onstop = async () => {
                         // 녹음 중지 시 즉시 스트림 해제
                         stopMicrophone();
+                        recordedMime = mediaRecorder.mimeType || 'audio/webm';
                         const base64Audio = (await new Promise(r => { const f = new FileReader(); f.onload = () => r(f.result); f.readAsDataURL(new Blob(audioChunks, { type: 'audio/wav' })); })).split(',')[1];
                         await verifySpeech(base64Audio, target);
                     };
@@ -565,10 +576,17 @@
             const page = pages[currentPage]; const maxTries = page.type === 'free-speech' ? 3 : 2;
             speechTries++; if(triesDisplay) triesDisplay.innerText = `Essai: ${speechTries} / ${maxTries}`;
             try {
-                const res = await fetch(CLOVA_API_FUNCTION_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ audioBase64: audioBase64, languageCode: "Kor", referenceText: referenceText || page.targets[0] }) });
+                if (!lessonPermit) { throw new Error("Permis d'accès indisponible. Veuillez actualiser la page et réessayer."); }
+                const res = await fetch(GEMINI_API_FUNCTION_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ model: "gemini-3.5-transcribe", audioBase64: audioBase64, mimeType: recordedMime, permit: lessonPermit, lesson_id: lessonPermitId }) });
+                if (!response.ok) {
+                    if (response.status === 401 || response.status === 403) throw new Error("Permis d'accès expiré. Veuillez actualiser la page et réessayer.");
+                    if (response.status === 429) throw new Error("Limite d'utilisation atteinte. Veuillez réessayer dans quelques instants. Si l'erreur persiste, signalez un bug.");
+                    if (response.status >= 500) throw new Error("Erreur du serveur. Veuillez réessayer dans quelques instants. Si l'erreur persiste, signalez un bug.");
+                    throw new Error("Erreur de connexion. Veuillez réessayer.");
+                }
                 const result = await res.json();
-                let recognizedText = result.text || result.recognizedText || "";
-                let score = page.type === 'free-speech' ? Math.max(...page.targets.map(t => calculateSimilarity(t, recognizedText))) : (result.score || calculateSimilarity(referenceText, recognizedText));
+                let recognizedText = (result.data && result.data.text) || result.text || result.recognizedText || "";
+                let score = page.type === 'free-speech' ? Math.max(...page.targets.map(t => calculateSimilarity(t, recognizedText))) : calculateSimilarity(referenceText, recognizedText);
                 page.score = score;
                 if (score >= 50) {
                     correctSound.triggerAttackRelease(['G5', 'C6'], '4n'); page.isCompleted = true;
@@ -584,7 +602,11 @@
                     if (page.type === 'free-speech') { if (speechTries === 1) document.getElementById('free-speech-hints').classList.replace('hidden', 'flex'); else if (speechTries === 2) document.getElementById('free-speech-text').classList.replace('hidden', 'block'); } else playInteractionWithMicLock(page.targetAudio);
                     if (status) { status.innerText = "Essayons encore une fois !"; status.className = "text-orange-500 font-bold mt-2 text-center"; }
                 }
-            } catch (error) { if (speechTries >= maxTries) { page.isCompleted = true; document.getElementById('next-btn').disabled = false; } }
+            } catch (error) {
+                const st = document.getElementById('speech-status');
+                if (st) { st.innerText = (error && error.message) ? error.message : "Erreur de connexion. Veuillez réessayer."; st.className = "text-red-500 font-bold mt-2 text-center px-4"; }
+                if (speechTries >= maxTries) { page.isCompleted = true; document.getElementById('next-btn').disabled = false; }
+            }
         }
 
         function calculateSimilarity(ref, hyp) {

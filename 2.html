@@ -246,7 +246,17 @@
         const RECORDING_LIMIT = 6000; 
 
         const BASE_44_ORIGIN = "https://coreeno.base44.app";
-        const CLOVA_API_FUNCTION_URL = BASE_44_ORIGIN + '/api/functions/naverClovaSpeech';
+        const GEMINI_API_FUNCTION_URL = BASE_44_ORIGIN + '/functions/GeminiChatSecure';
+        let lessonPermit = null;
+        let lessonPermitId = null;
+        let recordedMime = 'audio/webm';
+        window.addEventListener('message', (event) => {
+            if (event.data && event.data.type === 'coreeno:permit') {
+                lessonPermit = event.data.permit;
+                lessonPermitId = event.data.lesson_id;
+            }
+        });
+
 
         window.onload = () => {
             Tone.Destination.volume.value = -8;
@@ -653,6 +663,7 @@
                     audioChunks = [];
                     mediaRecorder.ondataavailable = (event) => audioChunks.push(event.data);
                     mediaRecorder.onstop = async () => {
+                        recordedMime = mediaRecorder.mimeType || 'audio/webm';
                         const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
                         const reader = new FileReader();
                         reader.readAsDataURL(audioBlob);
@@ -729,17 +740,21 @@
             if(triesDisplay) triesDisplay.innerText = `Essai: ${speechTries} / ${maxTries}`;
 
             try {
-                // Pass languageCode: Kor, and the first reference text to bias correctly if needed
-                let callReferenceText = referenceText || (page.type === 'free-speech' ? page.targets[0] : "");
-                
-                const response = await fetch(CLOVA_API_FUNCTION_URL, {
+                if (!lessonPermit) { throw new Error("Permis d'accès indisponible. Veuillez actualiser la page et réessayer."); }
+                const response = await fetch(GEMINI_API_FUNCTION_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ audioBase64: audioBase64, languageCode: "Kor", referenceText: callReferenceText })
+                    body: JSON.stringify({ model: "gemini-3.5-transcribe", audioBase64: audioBase64, mimeType: recordedMime, permit: lessonPermit, lesson_id: lessonPermitId })
                 });
-                
+                if (!response.ok) {
+                    if (response.status === 401 || response.status === 403) throw new Error("Permis d'accès expiré. Veuillez actualiser la page et réessayer.");
+                    if (response.status === 429) throw new Error("Limite d'utilisation atteinte. Veuillez réessayer dans quelques instants. Si l'erreur persiste, signalez un bug.");
+                    if (response.status >= 500) throw new Error("Erreur du serveur. Veuillez réessayer dans quelques instants. Si l'erreur persiste, signalez un bug.");
+                    throw new Error("Erreur de connexion. Veuillez réessayer.");
+                }
+
                 const result = await response.json();
-                const recognizedText = result.text || result.recognizedText || result.value || "";
+                const recognizedText = (result.data && result.data.text) || result.text || result.recognizedText || result.value || "";
                 
                 let score = 0;
 
@@ -747,10 +762,7 @@
                     // Check against all allowed targets
                     score = Math.max(...page.targets.map(t => calculateSimilarity(t, recognizedText)));
                 } else {
-                    score = result.score || result.confidence;
-                    if (score === undefined || score === null) {
-                        score = calculateSimilarity(referenceText, recognizedText);
-                    }
+                    score = calculateSimilarity(referenceText, recognizedText);
                 }
                 
                 page.score = score;
@@ -842,7 +854,7 @@
                     document.getElementById('next-btn').disabled = false;
                 } else {
                     if (status) {
-                        status.innerText = "Erreur de connexion. Réessayez.";
+                        status.innerText = (error && error.message) ? error.message : "Erreur de connexion. Veuillez réessayer.";
                         status.className = "text-red-500 font-bold mt-2 text-center";
                     }
                     if (page.type === 'free-speech') {
