@@ -663,7 +663,7 @@
                     audioChunks = [];
                     mediaRecorder.ondataavailable = (event) => audioChunks.push(event.data);
                     mediaRecorder.onstop = async () => {
-                        recordedMime = mediaRecorder.mimeType || 'audio/webm';
+                        recordedMime = (mediaRecorder.mimeType || 'audio/webm').split(';')[0];
                         const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
                         const reader = new FileReader();
                         reader.readAsDataURL(audioBlob);
@@ -744,7 +744,13 @@
                 const response = await fetch(GEMINI_API_FUNCTION_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ model: "gemini-3.5-transcribe", audioBase64: audioBase64, mimeType: recordedMime, permit: lessonPermit, lesson_id: lessonPermitId })
+                    body: JSON.stringify({
+                        model: "gemini-3.5-transcribe",
+                        contents: [{ role: "user", parts: [{ inline_data: { mime_type: recordedMime, data: audioBase64 } }] }],
+                        generationConfig: { transcriptionConfig: { languageCodes: ["ko-KR"] } },
+                        permit: lessonPermit,
+                        lesson_id: lessonPermitId
+                    })
                 });
                 if (!response.ok) {
                     if (response.status === 401 || response.status === 403) throw new Error("Permis d'accès expiré. Veuillez actualiser la page et réessayer.");
@@ -754,7 +760,14 @@
                 }
 
                 const result = await response.json();
-                const recognizedText = (result.data && result.data.text) || result.text || result.recognizedText || result.value || "";
+                let recognizedText = "";
+                if (result.raw && result.raw.candidates && result.raw.candidates[0] && result.raw.candidates[0].content && result.raw.candidates[0].content.parts) {
+                    for (const part of result.raw.candidates[0].content.parts) {
+                        if (part.audioTranscription && part.audioTranscription.text) recognizedText += part.audioTranscription.text;
+                        else if (part.text) recognizedText += part.text;
+                    }
+                }
+                if (!recognizedText) recognizedText = result.text || result.recognizedText || "";
                 
                 let score = 0;
 
