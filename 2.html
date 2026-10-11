@@ -246,7 +246,7 @@
         const RECORDING_LIMIT = 6000; 
 
         const BASE_44_ORIGIN = "https://coreeno.base44.app";
-        const GEMINI_API_FUNCTION_URL = BASE_44_ORIGIN + '/functions/GeminiChatSecure';
+        const GEMINI_API_FUNCTION_URL = BASE_44_ORIGIN + '/functions/GeminiTransSecure';
         let lessonPermit = null;
         let lessonPermitId = null;
         let recordedMime = 'audio/webm';
@@ -430,7 +430,7 @@
                                     ${page.sub2 ? `<p class="text-slate-600 font-medium text-sm sm:text-base mt-1 text-center">${page.sub2}</p>` : ''}
                                     <div class="mt-3 bg-indigo-50 text-indigo-500 rounded-full p-2 hover:bg-indigo-100 transition-colors"><i class="ph ph-speaker-high text-2xl"></i></div>
                                 </div>
-                                <div id="speech-ui-container" class="flex flex-col items-center shrink-0 min-h-[140px]">
+                                <div id="speech-ui-container" class="flex flex-col items-center shrink-0 min-h-[clamp(180px,25vh,225px)]">
                                     ${page.isCompleted ? `
                                         <div class="mic-btn opacity-40 mb-2"><i class="ph ph-check"></i></div>
                                         <p class="${page.hideScore ? 'text-indigo-500' : 'text-green-500'} font-bold status-large mb-2">${page.hideScore ? 'Bien essayé !' : 'Très bien !'}</p>
@@ -747,7 +747,6 @@
                     body: JSON.stringify({
                         model: "gemini-3.5-transcribe",
                         contents: [{ role: "user", parts: [{ inline_data: { mime_type: recordedMime, data: audioBase64 } }] }],
-                        generationConfig: { transcriptionConfig: { languageCodes: ["ko-KR"] } },
                         permit: lessonPermit,
                         lesson_id: lessonPermitId
                     })
