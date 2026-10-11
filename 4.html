@@ -243,7 +243,7 @@
         const RECORDING_LIMIT = 6000; 
 
         const BASE_44_ORIGIN = "https://coreeno.base44.app";
-        const GEMINI_API_FUNCTION_URL = BASE_44_ORIGIN + '/functions/GeminiChatSecure';
+        const GEMINI_API_FUNCTION_URL = BASE_44_ORIGIN + '/functions/GeminiTransSecure';
         let lessonPermit = null;
         let lessonPermitId = null;
         let recordedMime = 'audio/webm';
@@ -372,15 +372,16 @@
                                     ${page.sub2 ? `<p class="text-slate-600 font-medium text-sm sm:text-base mt-1 text-center">${page.sub2}</p>` : ''}
                                     <div class="mt-3 bg-indigo-50 text-indigo-500 rounded-full p-2 hover:bg-indigo-100 transition-colors"><i class="ph ph-speaker-high text-2xl"></i></div>
                                 </div>
-                                <div id="speech-ui-container" class="flex flex-col items-center shrink-0 min-h-[140px]">
-                                    ${page.isCompleted ? `
-                                        <div class="mic-btn opacity-40 mb-2"><i class="ph ph-check"></i></div>
-                                        <p class="${page.hideScore ? 'text-indigo-500' : 'text-green-500'} font-bold status-large mb-2">${page.hideScore ? 'Bien essayé !' : 'Très bien !'}</p>
-                                    ` : `
-                                        <button id="mic-btn" class="mic-btn opacity-50 cursor-not-allowed" disabled onclick="toggleRecording('${page.target}')"><i class="ph ph-microphone"></i></button>
-                                        <p id="speech-status" class="text-slate-500 font-medium text-sm transition-all duration-300 mt-2 text-center">Cliquez sur le micro pour parler</p>
-                                        <p id="speech-tries" class="text-[10px] text-slate-400 mt-1 uppercase">Essai: 0 / 2</p>
-                                    `}
+                                <div id="speech-ui-container" class="flex flex-col items-center shrink-0">
+                                    <button id="mic-btn" class="mic-btn mb-2 ${page.isCompleted ? 'opacity-40' : 'opacity-50 cursor-not-allowed'}" ${page.isCompleted ? '' : 'disabled'} onclick="toggleRecording('${page.target}')"><i class="ph ${page.isCompleted ? 'ph-check' : 'ph-microphone'}"></i></button>
+                                    <div class="grid justify-items-center items-center w-full">
+                                        <p id="speech-status" class="col-start-1 row-start-1 text-slate-500 font-medium text-sm transition-all duration-300 text-center ${page.isCompleted ? 'invisible' : ''}">Cliquez sur le micro pour parler</p>
+                                        <p id="speech-done-status" class="col-start-1 row-start-1 status-large font-bold text-center ${page.isCompleted ? '' : 'invisible'} ${page.hideScore ? 'text-indigo-500' : 'text-green-500'}">${page.hideScore ? 'Bien essayé !' : 'Très bien !'}</p>
+                                    </div>
+                                    <div class="grid justify-items-center items-center w-full mt-2">
+                                        <p id="speech-tries" class="col-start-1 row-start-1 text-[10px] text-slate-400 uppercase ${page.isCompleted ? 'invisible' : ''}">Essai: 0 / 2</p>
+                                        <div id="precision-card" class="col-start-1 row-start-1 bg-indigo-50 border border-indigo-100 rounded-xl px-4 py-2 flex items-center gap-2 ${page.isCompleted && !page.hideScore && page.score !== undefined ? '' : 'invisible'}"><i class="ph ph-target text-indigo-500 text-xl"></i><span class="text-indigo-600 font-bold">Précision : ${page.score !== undefined ? page.score : 0}%</span></div>
+                                    </div>
                                 </div>
                             </div>
                         `;
@@ -431,21 +432,21 @@
                                 <h2 class="subtitle-main text-slate-900 mb-4">${page.question}</h2>
                                 <div class="char-card shrink-0 mb-4 px-10 py-10 flex flex-col items-center">
                                     <div class="font-bold tracking-tight text-center leading-tight text-slate-800" style="font-size: clamp(2rem, 6vh, 4rem);">${page.targetText}</div>
-                                    <div id="free-speech-text" class="mt-4 text-indigo-600 font-bold text-xl sm:text-2xl transition-opacity duration-300 ${showText ? 'block' : 'hidden'}">
+                                    <div id="free-speech-text" class="mt-4 text-indigo-600 font-bold text-xl sm:text-2xl transition-opacity duration-300 block ${showText ? '' : 'invisible'}">
                                         죄송합니다 / 미안해요
                                     </div>
                                 </div>
-                                <div id="speech-ui-container" class="flex flex-col items-center shrink-0 min-h-[140px]">
-                                    ${page.isCompleted ? `
-                                        <div class="mic-btn opacity-40 mb-2"><i class="ph ph-check"></i></div>
-                                        <p class="${page.hideScore ? 'text-indigo-500' : 'text-green-500'} font-bold status-large mb-2">${page.hideScore ? 'Bien essayé !' : 'Très bien !'}</p>
-                                    ` : `
-                                        <button id="mic-btn" class="mic-btn" onclick="toggleRecording()"><i class="ph ph-microphone"></i></button>
-                                        <p id="speech-status" class="text-slate-500 font-medium text-sm transition-all duration-300 mt-2 text-center">Cliquez sur le micro pour parler</p>
-                                        <p id="speech-tries" class="text-[10px] text-slate-400 mt-1 uppercase">Essai: ${speechTries} / 3</p>
-                                    `}
+                                <div id="speech-ui-container" class="flex flex-col items-center shrink-0">
+                                    <button id="mic-btn" class="mic-btn mb-2 ${page.isCompleted ? 'opacity-40' : ''}" ${page.isCompleted ? 'disabled' : ''} onclick="toggleRecording()"><i class="ph ${page.isCompleted ? 'ph-check' : 'ph-microphone'}"></i></button>
+                                    <div class="grid justify-items-center items-center w-full">
+                                        <p id="speech-status" class="col-start-1 row-start-1 text-slate-500 font-medium text-sm transition-all duration-300 text-center ${page.isCompleted ? 'invisible' : ''}">Cliquez sur le micro pour parler</p>
+                                        <p id="speech-done-status" class="col-start-1 row-start-1 status-large font-bold text-center ${page.isCompleted ? '' : 'invisible'} ${page.hideScore ? 'text-indigo-500' : 'text-green-500'}">${page.hideScore ? 'Bien essayé !' : 'Très bien !'}</p>
+                                    </div>
+                                    <div class="grid justify-items-center items-center w-full mt-2">
+                                        <p id="speech-tries" class="col-start-1 row-start-1 text-[10px] text-slate-400 uppercase ${page.isCompleted ? 'invisible' : ''}">Essai: ${speechTries} / 3</p>
+                                    </div>
                                 </div>
-                                <div id="free-speech-hints" class="gap-4 mt-2 transition-opacity duration-300 ${showHints ? 'flex' : 'hidden'}">
+                                <div id="free-speech-hints" class="gap-4 mt-2 transition-opacity duration-300 flex ${showHints ? '' : 'invisible'}">
                                     ${page.hints.map((h, idx) => `
                                         <button onclick="playInteractionWithMicLock('${h}')" class="flex flex-col items-center gap-2 px-4 py-2 bg-indigo-50 rounded-xl text-indigo-600 hover:bg-indigo-100 transition-colors">
                                             <i class="ph ph-speaker-high text-2xl"></i>
@@ -571,6 +572,37 @@
             } 
         }
 
+        // 발화 완료 상태 UI: 레이아웃 이동·텍스트 겹침 없이 visibility만 전환
+        window.setSpeechCompletedUI = function(hideScore, score, showCard) {
+            const micBtn = document.getElementById('mic-btn');
+            if (micBtn) {
+                micBtn.disabled = true;
+                micBtn.classList.remove('recording', 'opacity-50', 'cursor-not-allowed');
+                micBtn.classList.add('opacity-40');
+                micBtn.innerHTML = '<i class="ph ph-check"></i>';
+            }
+            const st = document.getElementById('speech-status');
+            if (st) { st.style.transition = 'none'; st.classList.add('invisible'); }
+            const ds = document.getElementById('speech-done-status');
+            if (ds) {
+                ds.classList.remove('invisible');
+                ds.classList.remove('text-indigo-500', 'text-green-500');
+                ds.classList.add(hideScore ? 'text-indigo-500' : 'text-green-500');
+                ds.innerText = hideScore ? 'Bien essayé !' : 'Très bien !';
+            }
+            const tries = document.getElementById('speech-tries');
+            if (tries) tries.classList.add('invisible');
+            const card = document.getElementById('precision-card');
+            if (card) {
+                if (showCard && !hideScore) {
+                    card.querySelector('span').innerText = 'Précision : ' + score + '%';
+                    card.classList.remove('invisible');
+                } else {
+                    card.classList.add('invisible');
+                }
+            }
+        };
+
         async function verifySpeech(audioBase64, referenceText) {
             const status = document.getElementById('speech-status'); const triesDisplay = document.getElementById('speech-tries');
             const page = pages[currentPage]; const maxTries = page.type === 'free-speech' ? 3 : 2;
@@ -580,14 +612,13 @@
                 const res = await fetch(GEMINI_API_FUNCTION_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
                         model: "gemini-3.5-transcribe",
                         contents: [{ role: "user", parts: [{ inline_data: { mime_type: recordedMime, data: audioBase64 } }] }],
-                        generationConfig: { transcriptionConfig: { languageCodes: ["ko-KR"] } },
                         permit: lessonPermit,
                         lesson_id: lessonPermitId
                 }) });
-                if (!response.ok) {
-                    if (response.status === 401 || response.status === 403) throw new Error("Permis d'accès expiré. Veuillez actualiser la page et réessayer.");
-                    if (response.status === 429) throw new Error("Limite d'utilisation atteinte. Veuillez réessayer dans quelques instants. Si l'erreur persiste, signalez un bug.");
-                    if (response.status >= 500) throw new Error("Erreur du serveur. Veuillez réessayer dans quelques instants. Si l'erreur persiste, signalez un bug.");
+                if (!res.ok) {
+                    if (res.status === 401 || res.status === 403) throw new Error("Permis d'accès expiré. Veuillez actualiser la page et réessayer.");
+                    if (res.status === 429) throw new Error("Limite d'utilisation atteinte. Veuillez réessayer dans quelques instants. Si l'erreur persiste, signalez un bug.");
+                    if (res.status >= 500) throw new Error("Erreur du serveur. Veuillez réessayer dans quelques instants. Si l'erreur persiste, signalez un bug.");
                     throw new Error("Erreur de connexion. Veuillez réessayer.");
                 }
                 const result = await res.json();
@@ -603,21 +634,21 @@
                 page.score = score;
                 if (score >= 50) {
                     correctSound.triggerAttackRelease(['G5', 'C6'], '4n'); page.isCompleted = true;
-                    document.getElementById('speech-ui-container').innerHTML = `<div class="mic-btn opacity-40 mb-2"><i class="ph ph-check"></i></div><p class="text-green-500 font-bold status-large mb-2">Très bien !</p>${page.type !== 'free-speech' ? `<div class="bg-indigo-50 border border-indigo-100 rounded-xl px-4 py-2 flex items-center gap-2"><i class="ph ph-target text-indigo-500 text-xl"></i><span class="text-indigo-600 font-bold">Précision : ${page.score}%</span></div>` : ''}`;
-                    if (page.type === 'free-speech') { document.getElementById('free-speech-text').classList.replace('hidden', 'block'); document.getElementById('free-speech-hints').classList.replace('hidden', 'flex'); }
+                    setSpeechCompletedUI(false, page.score, page.type !== 'free-speech');
+                    if (page.type === 'free-speech') { document.getElementById('free-speech-text').classList.remove('invisible'); document.getElementById('free-speech-hints').classList.remove('invisible'); }
                     document.getElementById('next-btn').disabled = false;
                 } else if (speechTries >= maxTries) {
                     page.isCompleted = true; page.hideScore = true; correctSound.triggerAttackRelease(['G5', 'C6'], '4n');
-                    document.getElementById('speech-ui-container').innerHTML = `<div class="mic-btn opacity-40 mb-2"><i class="ph ph-check"></i></div><p class="text-indigo-500 font-bold status-large mb-2">Bien essayé !</p>`;
-                    if (page.type === 'free-speech') { document.getElementById('free-speech-text').classList.replace('hidden', 'block'); document.getElementById('free-speech-hints').classList.replace('hidden', 'flex'); }
+                    setSpeechCompletedUI(true, 0, false);
+                    if (page.type === 'free-speech') { document.getElementById('free-speech-text').classList.remove('invisible'); document.getElementById('free-speech-hints').classList.remove('invisible'); }
                     document.getElementById('next-btn').disabled = false;
                 } else {
-                    if (page.type === 'free-speech') { if (speechTries === 1) document.getElementById('free-speech-hints').classList.replace('hidden', 'flex'); else if (speechTries === 2) document.getElementById('free-speech-text').classList.replace('hidden', 'block'); } else playInteractionWithMicLock(page.targetAudio);
-                    if (status) { status.innerText = "Essayons encore une fois !"; status.className = "text-orange-500 font-bold mt-2 text-center"; }
+                    if (page.type === 'free-speech') { if (speechTries === 1) document.getElementById('free-speech-hints').classList.remove('invisible'); else if (speechTries === 2) document.getElementById('free-speech-text').classList.remove('invisible'); } else playInteractionWithMicLock(page.targetAudio);
+                    if (status) { status.innerText = "Essayons encore une fois !"; status.className = "col-start-1 row-start-1 text-orange-500 font-bold text-center"; }
                 }
             } catch (error) {
                 const st = document.getElementById('speech-status');
-                if (st) { st.innerText = (error && error.message) ? error.message : "Erreur de connexion. Veuillez réessayer."; st.className = "text-red-500 font-bold mt-2 text-center px-4"; }
+                if (st) { st.innerText = (error && error.message) ? error.message : "Erreur de connexion. Veuillez réessayer."; st.className = "col-start-1 row-start-1 text-red-500 font-bold text-center px-4"; }
                 if (speechTries >= maxTries) { page.isCompleted = true; document.getElementById('next-btn').disabled = false; }
             }
         }

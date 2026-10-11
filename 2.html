@@ -362,7 +362,7 @@
                 micBtn.innerHTML = '<i class="ph ph-check"></i>';
             }
             const st = document.getElementById('speech-status');
-            if (st) st.classList.add('invisible');
+            if (st) { st.style.transition = 'none'; st.classList.add('invisible'); }
             const ds = document.getElementById('speech-done-status');
             if (ds) {
                 ds.classList.remove('invisible');
