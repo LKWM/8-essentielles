@@ -421,7 +421,7 @@
                     mediaRecorder = new MediaRecorder(currentStream); audioChunks = [];
                     mediaRecorder.ondataavailable = (event) => audioChunks.push(event.data);
                     mediaRecorder.onstop = async () => {
-                        recordedMime = mediaRecorder.mimeType || 'audio/webm';
+                        recordedMime = (mediaRecorder.mimeType || 'audio/webm').split(';')[0];
                         const blob = new Blob(audioChunks, { type: 'audio/wav' });
                         const reader = new FileReader(); reader.readAsDataURL(blob);
                         reader.onloadend = async () => { verifySpeech(reader.result.split(',')[1], target); };
@@ -450,7 +450,13 @@
                 if (!lessonPermit) { throw new Error("Permis d'accès indisponible. Veuillez actualiser la page et réessayer."); }
                 const res = await fetch(GEMINI_API_FUNCTION_URL, { 
                     method: 'POST', headers: { 'Content-Type': 'application/json' }, 
-                    body: JSON.stringify({ model: "gemini-3.5-transcribe", audioBase64: audioBase64, mimeType: recordedMime, permit: lessonPermit, lesson_id: lessonPermitId }) 
+                    body: JSON.stringify({
+                        model: "gemini-3.5-transcribe",
+                        contents: [{ role: "user", parts: [{ inline_data: { mime_type: recordedMime, data: audioBase64 } }] }],
+                        generationConfig: { transcriptionConfig: { languageCodes: ["ko-KR"] } },
+                        permit: lessonPermit,
+                        lesson_id: lessonPermitId
+                }) 
                 });
                 if (!res.ok) {
                     if (res.status === 401 || res.status === 403) throw new Error("Permis d'accès expiré. Veuillez actualiser la page et réessayer.");
@@ -459,7 +465,14 @@
                     throw new Error("Erreur de connexion. Veuillez réessayer.");
                 }
                 const result = await res.json();
-                let recognizedText = (result.data && result.data.text) || result.text || result.recognizedText || "";
+                let recognizedText = "";
+                if (result.raw && result.raw.candidates && result.raw.candidates[0] && result.raw.candidates[0].content && result.raw.candidates[0].content.parts) {
+                    for (const part of result.raw.candidates[0].content.parts) {
+                        if (part.audioTranscription && part.audioTranscription.text) recognizedText += part.audioTranscription.text;
+                        else if (part.text) recognizedText += part.text;
+                    }
+                }
+                if (!recognizedText) recognizedText = result.text || result.recognizedText || "";
                 let score = calculateSimilarity(referenceText, recognizedText);
                 page.score = score;
 
