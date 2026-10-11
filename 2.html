@@ -521,7 +521,7 @@
                                 <h2 class="subtitle-main text-slate-900 mb-4">${page.question}</h2>
                                 <div class="char-card shrink-0 mb-4 px-10 py-10 flex flex-col items-center">
                                     <div class="font-bold tracking-tight text-center leading-tight text-slate-800" style="font-size: clamp(2rem, 6vh, 4rem);">${page.targetText}</div>
-                                    <div id="free-speech-text" class="mt-4 text-indigo-600 font-bold text-xl sm:text-2xl transition-opacity duration-300 ${showText ? 'block' : 'hidden'}">
+                                    <div id="free-speech-text" class="mt-4 text-indigo-600 font-bold text-xl sm:text-2xl transition-opacity duration-300 block ${showText ? '' : 'invisible'}">
                                         안녕하세요? / 안녕하십니까?
                                     </div>
                                 </div>
@@ -537,7 +537,7 @@
                                     </div>
                                 </div>
 
-                                <div id="free-speech-hints" class="gap-4 mt-2 transition-opacity duration-300 ${showHints ? 'flex' : 'hidden'}">
+                                <div id="free-speech-hints" class="gap-4 mt-2 transition-opacity duration-300 flex ${showHints ? '' : 'invisible'}">
                                     ${page.hints.map((h, idx) => `
                                         <button onclick="playInteractionWithMicLock('${h}')" class="flex flex-col items-center gap-2 px-4 py-2 bg-indigo-50 rounded-xl text-indigo-600 hover:bg-indigo-100 transition-colors">
                                             <i class="ph ph-speaker-high text-2xl"></i>
@@ -822,8 +822,8 @@
                     if (page.type === 'free-speech') {
                         const textEl = document.getElementById('free-speech-text');
                         const hintsEl = document.getElementById('free-speech-hints');
-                        if (textEl) { textEl.classList.remove('hidden'); textEl.classList.add('block'); }
-                        if (hintsEl) { hintsEl.classList.remove('hidden'); hintsEl.classList.add('flex'); }
+                        if (textEl) textEl.classList.remove('invisible');
+                        if (hintsEl) hintsEl.classList.remove('invisible');
                     }
 
                     document.getElementById('next-btn').disabled = false;
@@ -841,8 +841,8 @@
                         if (page.type === 'free-speech') {
                             const textEl = document.getElementById('free-speech-text');
                             const hintsEl = document.getElementById('free-speech-hints');
-                            if (textEl) { textEl.classList.remove('hidden'); textEl.classList.add('block'); }
-                            if (hintsEl) { hintsEl.classList.remove('hidden'); hintsEl.classList.add('flex'); }
+                            if (textEl) textEl.classList.remove('invisible');
+                            if (hintsEl) hintsEl.classList.remove('invisible');
                         }
 
                         document.getElementById('next-btn').disabled = false;
@@ -851,10 +851,10 @@
                         if (page.type === 'free-speech') {
                             if (speechTries === 1) {
                                 const hintsEl = document.getElementById('free-speech-hints');
-                                if (hintsEl) { hintsEl.classList.remove('hidden'); hintsEl.classList.add('flex'); }
+                                if (hintsEl) hintsEl.classList.remove('invisible');
                             } else if (speechTries === 2) {
                                 const textEl = document.getElementById('free-speech-text');
-                                if (textEl) { textEl.classList.remove('hidden'); textEl.classList.add('block'); }
+                                if (textEl) textEl.classList.remove('invisible');
                             }
                         } else {
                             playInteractionWithMicLock(page.targetAudio);
@@ -873,7 +873,8 @@
                     page.hideScore = true;
                     setSpeechCompletedUI(true, 0, false);
                     if (page.type === 'free-speech') {
-                         document.getElementById('free-speech-hints').style.display = 'flex';
+                         const hintsEl = document.getElementById('free-speech-hints');
+                         if (hintsEl) hintsEl.classList.remove('invisible');
                     }
                     document.getElementById('next-btn').disabled = false;
                 } else {
@@ -883,7 +884,8 @@
                     }
                     if (page.type === 'free-speech') {
                          page.showHints = true;
-                         document.getElementById('free-speech-hints').style.display = 'flex';
+                         const hintsEl = document.getElementById('free-speech-hints');
+                         if (hintsEl) hintsEl.classList.remove('invisible');
                     }
                 }
             }
