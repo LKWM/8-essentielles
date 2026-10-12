@@ -610,6 +610,7 @@
                     body: JSON.stringify({
                         model: "gemini-3.5-transcribe",
                         contents: [{ role: "user", parts: [{ inline_data: { mime_type: recordedMime, data: audioBase64 } }] }],
+                        generationConfig: { transcriptionConfig: { languageCodes: ["ko-KR"] } },
                         permit: lessonPermit,
                         lesson_id: lessonPermitId
                 })
