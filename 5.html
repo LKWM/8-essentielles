@@ -270,7 +270,7 @@
         let speechTries = 0;
         let recordingTimer = null;
         const RECORDING_LIMIT = 6000; 
-        const GEMINI_API_FUNCTION_URL = 'https://coreeno.base44.app/functions/GeminiTransSecure';
+        const GEMINI_API_FUNCTION_URL = 'https://coreeno.base44.app/functions/GeminiChatSecure';
         let lessonPermit = null;
         let lessonPermitId = null;
         let recordedMime = 'audio/webm';
@@ -608,7 +608,8 @@
                 const response = await fetch(GEMINI_API_FUNCTION_URL, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        model: "gemini-3.5-transcribe",
+                        model: "gemini-3.5-flash-lite",
+                        systemInstruction: "유저 발화를 한글로 전사하시오.",
                         contents: [{ role: "user", parts: [{ inline_data: { mime_type: recordedMime, data: audioBase64 } }] }],
                         generationConfig: { transcriptionConfig: { languageCodes: ["ko-KR"] } },
                         permit: lessonPermit,
